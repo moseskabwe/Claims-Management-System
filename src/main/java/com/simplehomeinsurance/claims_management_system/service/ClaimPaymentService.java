@@ -1,0 +1,38 @@
+package com.simplehomeinsurance.claims_management_system.service;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.simplehomeinsurance.claims_management_system.dao.ClaimPaymentDAO;
+import com.simplehomeinsurance.claims_management_system.entity.ClaimPayment;
+
+
+@Service
+public class ClaimPaymentService {
+	
+	@Autowired
+	private ClaimPaymentDAO claimPaymentDAO;
+	
+	@Transactional
+	public List<ClaimPayment> getClaimPaymentList(){
+		
+		return claimPaymentDAO.getClaimPaymentList();
+	}
+	
+	@Transactional
+	public ClaimPayment getClaimPayment(int paymentNumber){
+		
+		return claimPaymentDAO.getDeclinedClaim(paymentNumber);
+	}
+	
+	@Transactional
+	public void saveDeclinedClaim(ClaimPayment claimPayment) {
+		
+		claimPaymentDAO.saveClaimPayment(claimPayment);
+	}
+	
+}
