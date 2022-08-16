@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,11 +14,24 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import com.simplehomeinsurance.claims_management_system.idgenerator.StringPrefixedSequenceIdGenerator;
+
 @Entity
 @Table(name="claim")
 public class Claim {
 	
 	@Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "claims_sequence")
+    @GenericGenerator(
+        name = "claims_sequence", 
+        strategy = "com.hibernatetutorial.demo.StringPrefixedSequenceIdGenerator", 
+        parameters = {
+            @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "49"),
+            @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "CM"),
+            @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%06d") })
 	@Column(name="claim_number")
 	private String claimNumber;
 	

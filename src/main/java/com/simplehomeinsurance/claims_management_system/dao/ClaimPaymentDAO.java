@@ -41,7 +41,6 @@ public class ClaimPaymentDAO {
 		Session currentSession = sessionFactory.getCurrentSession();
 		
 		currentSession.saveOrUpdate(claimPayment);
-		
 	}
 		
 }
