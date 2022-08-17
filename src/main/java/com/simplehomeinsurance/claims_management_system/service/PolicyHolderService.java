@@ -34,4 +34,10 @@ public class PolicyHolderService {
 		policyHolderDAO.savePolicyHolder(policyHolder);
 	}
 	
+	@Transactional
+	public List<PolicyHolder> searchPolicyHolders(String searchTerm) {
+		
+		return policyHolderDAO.searchPolicyHolders(searchTerm);
+	}
+	
 }
