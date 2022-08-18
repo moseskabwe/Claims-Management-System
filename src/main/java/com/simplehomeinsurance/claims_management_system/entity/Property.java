@@ -27,5 +27,14 @@ public class Property {
 	public String getPropertyAddress() {
 		return propertyAddress;
 	}
-		
+
+	public void setPropertyNumber(String propertyNumber) {
+		this.propertyNumber = propertyNumber;
+	}
+
+	public void setPropertyAddress(String propertyAddress) {
+		this.propertyAddress = propertyAddress;
+	}
+	
+	
 }

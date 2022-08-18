@@ -17,7 +17,7 @@ import com.simplehomeinsurance.claims_management_system.service.ClaimService;
 import com.simplehomeinsurance.claims_management_system.service.PolicyHolderService;
 
 @Controller
-@RequestMapping("dashboard/claims")
+@RequestMapping("dashboard/")
 public class ClaimController {
 	
 	@Autowired
@@ -26,7 +26,7 @@ public class ClaimController {
 	@Autowired
 	private PolicyHolderService policyHolderService;
 	
-	@GetMapping("/listClaims")
+	@GetMapping("listClaims")
 	public String showClaims(Model theModel) {
 		
 		List<Claim> theClaims = claimService.getClaimsList();
@@ -58,37 +58,37 @@ public class ClaimController {
 		return "edit-claim";
 	}
 	
-	@GetMapping("/createClaim")
-	public String createClaim() {
+	@GetMapping("/fileClaim")
+	public String fileClaim() {
 
-		return "create-claim";
+		return "file-claim";
 	}
 	
-	@PostMapping("/addClaimDetails")
+	@GetMapping("addClaimDetails")
 	public String addClaimDetails(@ModelAttribute("policyHolderNumber") String policyHolderNumber,
-									@ModelAttribute("claim") Claim theClaim,
 									Model theModel) {
 		
 		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyHolderNumber);
 		
 		List<Policy> policies  = policyHolder.getPolicies();
 		
+		Claim claim = new Claim();
+		
 		theModel.addAttribute("policyHolder", policyHolder);
 		
 		theModel.addAttribute("policies", policies);
 		
-		claimService.saveClaim(theClaim);
+		theModel.addAttribute("claim", claim);
 		
-		return "redirect:/dashboard/listClaims/editClaim";		
+		return "file-claim-form";
 	}
 	
-	@Deprecated
-	@PostMapping("/addClaim")
-	public String addClaim(@ModelAttribute("claimNumber") Claim theClaim) {
+	@PostMapping("saveClaim")
+	public String saveClaim(@ModelAttribute("claim") Claim theClaim) {
 		
 		claimService.saveClaim(theClaim);
 		
-		return "redirect:/dashboard/claims/edit-claim";
+		return "redirect:/dashboard/listClaims";
 	}
 	
 }

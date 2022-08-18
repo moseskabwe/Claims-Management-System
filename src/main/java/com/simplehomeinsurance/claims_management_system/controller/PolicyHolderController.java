@@ -15,13 +15,13 @@ import com.simplehomeinsurance.claims_management_system.entity.PolicyHolder;
 import com.simplehomeinsurance.claims_management_system.service.PolicyHolderService;
 
 @Controller
-@RequestMapping("/policyholders") // change this
+//@RequestMapping("/policyholders") // change this
 public class PolicyHolderController {
 
 	@Autowired
 	private PolicyHolderService policyHolderService;
 	
-	@RequestMapping("/searchPolicyholders")
+	@RequestMapping("dashboard/searchPolicyholders")
 	public String searchPolicyholders(@RequestParam("searchTerm") String searchTerm,
 										Model theModel) {
 		

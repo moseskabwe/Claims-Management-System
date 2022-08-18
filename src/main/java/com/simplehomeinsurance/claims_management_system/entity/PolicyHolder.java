@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -32,9 +33,13 @@ public class PolicyHolder {
 	@Column(name="address")
 	private String address;
 	
-	@OneToMany(mappedBy = "policyHolder", cascade = {CascadeType.PERSIST, CascadeType.DETACH, 
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "policyHolder", cascade = {CascadeType.PERSIST, CascadeType.DETACH, 
  			CascadeType.MERGE, CascadeType.REFRESH})
 	private List<Policy> policies;
+	
+	@OneToMany(mappedBy = "policyHolder", cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
+ 			CascadeType.MERGE, CascadeType.REFRESH})
+	private List<Claim> claims;
 	
 	public PolicyHolder() {
 		
@@ -66,6 +71,10 @@ public class PolicyHolder {
 
 	public List<Policy> getPolicies() {
 		return policies;
+	}
+
+	public List<Claim> getClaims() {
+		return claims;
 	}
 	
 }

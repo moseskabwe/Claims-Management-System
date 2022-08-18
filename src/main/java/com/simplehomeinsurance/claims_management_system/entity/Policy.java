@@ -1,12 +1,21 @@
 package com.simplehomeinsurance.claims_management_system.entity;
 
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.simplehomeinsurance.claims_management_system.utils.DateUtils;
 
 @Entity
 @Table(name="policy")
@@ -16,21 +25,21 @@ public class Policy {
 	@Column(name="policy_number")
 	private String policyNumber;
 	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, 
- 			CascadeType.MERGE, CascadeType.REFRESH})
+	@OneToOne
 	@JoinColumn(name="policyholder_number")
 	private PolicyHolder policyHolder;
 	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, 
- 			CascadeType.MERGE, CascadeType.REFRESH})
+	@OneToOne
 	@JoinColumn(name="property_number")
 	private Property property;
 	
 	@Column(name="inception_date")
-	private String inceptionDate;
+	@Temporal(TemporalType.DATE)
+	private Date inceptionDate;
 	
 	@Column(name="end_date")
-	private String endDate;
+	@Temporal(TemporalType.DATE)
+	private Date endDate;
 	
 	@Column(name="policy_type")
 	private String policyType;
@@ -38,8 +47,18 @@ public class Policy {
 	@Column(name="in_force")
 	private String inForce;
 	
+	@OneToMany(mappedBy = "policy")
+	private List<Claim> claims;
+	
+	/*private LinkedHashMap<String, String> lossTypeOptions;*/
+	
 	public Policy() {
 		
+//		lossTypeOptions = new LinkedHashMap<>();
+//		
+//		lossTypeOptions.put("D", "Damage");
+//		lossTypeOptions.put("F", "Fire");
+//		lossTypeOptions.put("T", "Theft");
 	}
 
 	public String getPolicyNumber() {
@@ -55,11 +74,11 @@ public class Policy {
 	}
 
 	public String getInceptionDate() {
-		return inceptionDate;
+		return DateUtils.formatDate(endDate);
 	}
 
 	public String getEndDate() {
-		return endDate;
+		return DateUtils.formatDate(endDate);
 	}
 
 	public String getPolicyType() {
@@ -69,7 +88,21 @@ public class Policy {
 	public String getInForce() {
 		return inForce;
 	}
+
+	public void setProperty(Property property) {
+		this.property = property;
+	}
+
+	public void setPolicyType(String policyType) {
+		this.policyType = policyType;
+	}
+
+	public List<Claim> getClaims() {
+		return claims;
+	}
 	
 	
-	
+//	public LinkedHashMap<String, String> getLossTypeOptions() {
+//		return lossTypeOptions;
+//	}
 }

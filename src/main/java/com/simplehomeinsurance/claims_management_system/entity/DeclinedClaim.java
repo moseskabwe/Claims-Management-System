@@ -1,5 +1,8 @@
 package com.simplehomeinsurance.claims_management_system.entity;
 
+import java.text.ParseException;
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.simplehomeinsurance.claims_management_system.utils.DateUtils;
 
 @Entity
 @Table(name="declined_claims")
@@ -25,7 +32,8 @@ public class DeclinedClaim {
 	private Claim claim;
 	
 	@Column(name="declined_date")
-	private String declinedDate;
+	@Temporal(TemporalType.DATE)
+	private Date declinedDate;
 	
 	public DeclinedClaim() {
 		
@@ -48,11 +56,15 @@ public class DeclinedClaim {
 	}
 
 	public String getDeclinedDate() {
-		return declinedDate;
+		return DateUtils.formatDate(declinedDate);
 	}
 
 	public void setDeclinedDate(String declinedDate) {
-		this.declinedDate = declinedDate;
+		try {
+			this.declinedDate = DateUtils.parseDate(declinedDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

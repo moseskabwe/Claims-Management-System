@@ -20,7 +20,7 @@ public class ClaimDAO {
 		
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		Query<Claim> theQuery = currentSession.createQuery("from Claim", Claim.class);
+		Query<Claim> theQuery = currentSession.createQuery("from Claim order by filingDate desc", Claim.class);
 		
 		List<Claim> claims = theQuery.getResultList();
 		

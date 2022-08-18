@@ -1,4 +1,4 @@
-package com.simplehomeinsurance.claims_management_system.idgenerator;
+package com.simplehomeinsurance.claims_management_system.utils;
 
 import java.io.Serializable;
 import java.util.Properties;

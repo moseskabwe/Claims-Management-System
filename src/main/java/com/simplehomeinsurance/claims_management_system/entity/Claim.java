@@ -1,5 +1,7 @@
 package com.simplehomeinsurance.claims_management_system.entity;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,11 +15,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-import com.simplehomeinsurance.claims_management_system.idgenerator.StringPrefixedSequenceIdGenerator;
+import com.simplehomeinsurance.claims_management_system.utils.DateUtils;
+import com.simplehomeinsurance.claims_management_system.utils.StringPrefixedSequenceIdGenerator;
 
 @Entity
 @Table(name="claim")
@@ -27,7 +32,7 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "claims_sequence")
     @GenericGenerator(
         name = "claims_sequence", 
-        strategy = "com.hibernatetutorial.demo.StringPrefixedSequenceIdGenerator", 
+        strategy = "com.simplehomeinsurance.claims_management_system.idgenerator.StringPrefixedSequenceIdGenerator", 
         parameters = {
             @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "49"),
             @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "CM"),
@@ -35,28 +40,24 @@ public class Claim {
 	@Column(name="claim_number")
 	private String claimNumber;
 	
-	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
-						 CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToOne
 	@JoinColumn(name="adjuster_number")
 	private Adjuster adjuster;
 	
-	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
-			 CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToOne
 	@JoinColumn(name="policyholder_number")
 	private PolicyHolder policyHolder;
 	
-	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
-			 CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToOne
 	@JoinColumn(name="csr_number")
 	private CustomerServiceRep customerServiceRep;
 	
-	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
-			 CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToOne
 	@JoinColumn(name="policy_number")
 	private Policy policy;
 	
-	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
-			 CascadeType.MERGE, CascadeType.REFRESH})
+	@ManyToOne/*(cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
+			 CascadeType.MERGE, CascadeType.REFRESH})*/
 	@JoinColumn(name="property_number")
 	private Property property;
 	
@@ -64,10 +65,12 @@ public class Claim {
 	private String lossType;
 	
 	@Column(name="incident_date")
-	private String incidentDate;
+	@Temporal(TemporalType.DATE)
+	private Date incidentDate;
 	
 	@Column(name="filing_date")
-	private String filingDate;
+	@Temporal(TemporalType.DATE)
+	private Date filingDate;
 	
 	@Column(name="status")
 	private String status;
@@ -136,19 +139,27 @@ public class Claim {
 	}
 
 	public String getIncidentDate() {
-		return incidentDate;
+		return DateUtils.formatDate(incidentDate);
 	}
 
 	public void setIncidentDate(String incidentDate) {
-		this.incidentDate = incidentDate;
+		try {
+			this.incidentDate = DateUtils.parseDate(incidentDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getFilingDate() {
-		return filingDate;
+		return DateUtils.formatDate(filingDate);
 	}
 
 	public void setFilingDate(String filingDate) {
-		this.filingDate = filingDate;
+		try {
+			this.filingDate = DateUtils.parseDate(filingDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getLossType() {
