@@ -19,6 +19,7 @@
 		<table>
 			<tr>
 				<th>Claim number</th>
+				<th>Adjuster</th>
 				<th>Filing Date</th>
 				<th>Status</th>
 			</tr>
@@ -26,6 +27,7 @@
 			<c:forEach var="theClaim" items="${claimsList}">			
 				<tr>
 					<td>${theClaim.claimNumber}</td>
+					<td>${theClaim.adjuster.adjusterNumber}</td>
 					<td>${theClaim.filingDate}</td>
 					<td>${theClaim.status}</td>
 				</tr>
