@@ -1,5 +1,6 @@
 package com.simplehomeinsurance.claims_management_system.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -37,8 +38,7 @@ public class PolicyHolder {
  			CascadeType.MERGE, CascadeType.REFRESH})
 	private List<Policy> policies;
 	
-	@OneToMany(mappedBy = "policyHolder", cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
- 			CascadeType.MERGE, CascadeType.REFRESH})
+	@OneToMany(mappedBy = "policyHolder", fetch = FetchType.EAGER)
 	private List<Claim> claims;
 	
 	public PolicyHolder() {
@@ -75,6 +75,14 @@ public class PolicyHolder {
 
 	public List<Claim> getClaims() {
 		return claims;
+	}
+	
+	public void addClaim(Claim claim) {
+		if (claims == null) {
+			claims = new ArrayList<>();
+		}
+		claims.add(claim);
+		claim.setPolicyHolder(this);
 	}
 	
 }

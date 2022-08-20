@@ -1,5 +1,6 @@
 package com.simplehomeinsurance.claims_management_system.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -59,5 +60,13 @@ public class Adjuster {
 
 	public List<Claim> getClaims() {
 		return claims;
+	}
+	
+	public void addClaim(Claim claim) {
+		if (claims == null) {
+			claims = new ArrayList<>();
+		}
+		claims.add(claim);
+		claim.setAdjuster(this);;
 	}
 }

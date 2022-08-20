@@ -1,5 +1,6 @@
 package com.simplehomeinsurance.claims_management_system.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -61,4 +62,11 @@ public class CustomerServiceRep {
 		return claims;
 	}
 	
+	public void addClaim(Claim claim) {
+		if (claims == null) {
+			claims = new ArrayList<>();
+		}
+		claims.add(claim);
+		claim.setCustomerServiceRep(this);
+	}
 }

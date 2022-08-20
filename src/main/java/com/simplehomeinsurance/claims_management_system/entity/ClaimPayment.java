@@ -3,7 +3,6 @@ package com.simplehomeinsurance.claims_management_system.entity;
 import java.text.ParseException;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,8 +25,7 @@ public class ClaimPayment {
 	@Column(name="id")
 	private int paymentNumber;
 	
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH, 
- 			CascadeType.MERGE, CascadeType.REFRESH})
+	@OneToOne
 	@JoinColumn(name="claim_number")
 	private Claim claim;
 	

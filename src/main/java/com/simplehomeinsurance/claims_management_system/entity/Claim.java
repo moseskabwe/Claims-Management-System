@@ -1,6 +1,7 @@
 package com.simplehomeinsurance.claims_management_system.entity;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,11 +56,6 @@ public class Claim {
 	@ManyToOne
 	@JoinColumn(name="policy_number")
 	private Policy policy;
-	
-	@ManyToOne/*(cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
-			 CascadeType.MERGE, CascadeType.REFRESH})*/
-	@JoinColumn(name="property_number")
-	private Property property;
 	
 	@Column(name="loss_type")
 	private String lossType;
@@ -130,14 +126,6 @@ public class Claim {
 		this.policy = policy;
 	}
 
-	public Property getProperty() {
-		return property;
-	}
-
-	public void setProperty(Property property) {
-		this.property = property;
-	}
-
 	public String getIncidentDate() {
 		return DateUtils.formatDate(incidentDate);
 	}
@@ -190,8 +178,20 @@ public class Claim {
 		return declinedClaim;
 	}
 
+	public void setDeclinedClaim(DeclinedClaim declinedClaim) {
+		this.declinedClaim = declinedClaim;
+	}
+
 	public List<ClaimPayment> getPayments() {
 		return payments;
+	}
+	
+	public void addPayment(ClaimPayment payment) {
+		if (payments == null) {
+			payments = new ArrayList<>();
+		}
+		payments.add(payment);
+		payment.setClaim(this);
 	}
 	
 }

@@ -1,10 +1,9 @@
 package com.simplehomeinsurance.claims_management_system.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -101,6 +100,13 @@ public class Policy {
 		return claims;
 	}
 	
+	public void addClaim(Claim claim) {
+		if (claims == null) {
+			claims = new ArrayList<>();
+		}
+		claims.add(claim);
+		claim.setPolicy(this);
+	}
 	
 //	public LinkedHashMap<String, String> getLossTypeOptions() {
 //		return lossTypeOptions;
