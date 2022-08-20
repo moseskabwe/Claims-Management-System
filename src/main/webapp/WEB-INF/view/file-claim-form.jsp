@@ -17,7 +17,7 @@
 			
 			Policyholder Number: ${policyHolder.policyHolderNumber} <br>
 			Policyholder Name: ${policyHolder.firstName} ${policyHolder.lastName}<br>
-			
+
 			Select the policy:
 			<table>
 				<c:forEach var="policy" items="${policies}">	
