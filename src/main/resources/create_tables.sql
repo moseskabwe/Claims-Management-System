@@ -80,7 +80,6 @@ CREATE TABLE `claim` (
   `csr_number` int(10) DEFAULT NULL,
   `policyholder_number` varchar(13) NOT NULL,
   `policy_number` varchar(13) NOT NULL,
-  `property_number` varchar(13) NOT NULL,
   `loss_type` enum('Damage', 'Fire', 'Theft') NOT NULL,
   `incident_date` date NOT NULL,
   `filing_date` date NOT NULL,
@@ -88,10 +87,9 @@ CREATE TABLE `claim` (
   `notes` varchar(5000) DEFAULT NULL,
   PRIMARY KEY (`claim_number`),
   FOREIGN KEY (`policy_number`) REFERENCES `policy` (`policy_number`),
-  FOREIGN KEY (`policyholder_number`) REFERENCES `policy` (`policyholder_number`),
+  FOREIGN KEY (`policyholder_number`) REFERENCES `policyholder` (`id`),
   FOREIGN KEY (`adjuster_number`) REFERENCES `adjuster` (`id`),
-  FOREIGN KEY (`csr_number`) REFERENCES `customer_service_rep` (`id`),
-  FOREIGN KEY (`property_number`) REFERENCES `insured_property` (`property_number`)
+  FOREIGN KEY (`csr_number`) REFERENCES `customer_service_rep` (`id`)
 );
 
 DROP TABLE IF EXISTS `claims_sequence`;
