@@ -11,30 +11,12 @@
 		<h1>Claim Form</h1>
 		<hr>	
 		
-		<form:form action="saveClaim" modelAttribute="claim" method="POST">
+		<form:form action="saveClaim/${policyHolderNumber}" modelAttribute="claim" method="POST">
 			
-<%-- 			<form:hidden path="claimNumber"/> --%>
+			<form:hidden path="claimNumber"/> 
 			
-			Policyholder Number: ${policyHolder.policyHolderNumber} <br>
+			Policyholder Number: ${policyHolderNumber} <br>
 			Policyholder Name: ${policyHolder.firstName} ${policyHolder.lastName}<br>
-
-			Select the policy:
-			<table>
-				<c:forEach var="policy" items="${policies}">	
-						
-					<tr>
-						<td>Policy: ${policy.policyNumber} | <form:radiobutton path="policy.policyNumber" value="${policy.policyNumber}"/>
-						
-						<form:hidden path="property.propertyNumber" value="${policy.property}" /> </td>
-						
-						<td>${policy.policyType} | </td>
-						<td>${policy.property.propertyAddress} | </td>
-						<td>${policy.inForce} | </td>
-					</tr>
-				</c:forEach>
-			</table>
-			<br>
-			Customer Service Representative Number: <form:input path="customerServiceRep.customerServiceRepNumber"/>
 			<br>
 			Loss Type: 
 			<form:select path="lossType">
@@ -51,6 +33,10 @@
 			<br>
 			Notes:
 			<form:input type="textarea" path="notes"/> 
-			<br>
+			<br>			
+			<form:hidden path="status" value="First Notice"/> 
 			<input type="submit" value="Save Claim"/> 
 		</form:form>
+		
+	</body>
+</html>
