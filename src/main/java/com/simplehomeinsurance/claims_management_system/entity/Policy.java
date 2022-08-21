@@ -46,8 +46,8 @@ public class Policy {
 	@Column(name="in_force")
 	private String inForce;
 	
-	@OneToMany(mappedBy = "policy")
-	private List<Claim> claims;
+//	@OneToMany(mappedBy = "policy")
+//	private List<Claim> claims;
 	
 	/*private LinkedHashMap<String, String> lossTypeOptions;*/
 	
@@ -96,17 +96,17 @@ public class Policy {
 		this.policyType = policyType;
 	}
 
-	public List<Claim> getClaims() {
-		return claims;
-	}
+//	public List<Claim> getClaims() {
+//		return claims;
+//	}
 	
-	public void addClaim(Claim claim) {
-		if (claims == null) {
-			claims = new ArrayList<>();
-		}
-		claims.add(claim);
-		claim.setPolicy(this);
-	}
+//	public void addClaim(Claim claim) {
+//		if (claims == null) {
+//			claims = new ArrayList<>();
+//		}
+//		claims.add(claim);
+//		claim.setPolicy(this);
+//	}
 	
 //	public LinkedHashMap<String, String> getLossTypeOptions() {
 //		return lossTypeOptions;

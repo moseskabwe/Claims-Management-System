@@ -53,10 +53,6 @@ public class Claim {
 	@JoinColumn(name="csr_number")
 	private CustomerServiceRep customerServiceRep;
 	
-	@ManyToOne
-	@JoinColumn(name="policy_number")
-	private Policy policy;
-	
 	@Column(name="loss_type")
 	private String lossType;
 	
@@ -109,21 +105,13 @@ public class Claim {
 	public void setPolicyHolder(PolicyHolder policyHolder) {
 		this.policyHolder = policyHolder;
 	}
-
+	
 	public CustomerServiceRep getCustomerServiceRep() {
 		return customerServiceRep;
 	}
 
 	public void setCustomerServiceRep(CustomerServiceRep customerServiceRep) {
 		this.customerServiceRep = customerServiceRep;
-	}
-
-	public Policy getPolicy() {
-		return policy;
-	}
-
-	public void setPolicy(Policy policy) {
-		this.policy = policy;
 	}
 
 	public String getIncidentDate() {
@@ -193,5 +181,13 @@ public class Claim {
 		payments.add(payment);
 		payment.setClaim(this);
 	}
+
+	@Override
+	public String toString() {
+		return "Claim [claimNumber=" + claimNumber + ", adjuster=" + adjuster + ", policyHolder=" + policyHolder
+				+ ", customerServiceRep=" + customerServiceRep + ", lossType=" + lossType + ", incidentDate="
+				+ incidentDate + ", filingDate=" + filingDate + ", status=" + status + ", notes=" + notes + "]";
+	}
+	
 	
 }

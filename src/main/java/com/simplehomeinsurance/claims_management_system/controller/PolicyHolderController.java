@@ -15,7 +15,6 @@ import com.simplehomeinsurance.claims_management_system.entity.PolicyHolder;
 import com.simplehomeinsurance.claims_management_system.service.PolicyHolderService;
 
 @Controller
-//@RequestMapping("/policyholders") // change this
 public class PolicyHolderController {
 
 	@Autowired
@@ -39,8 +38,7 @@ public class PolicyHolderController {
 		
 		theModel.addAttribute("policyholder", policyholder);
 		
-		return "policyholder-details";
-		
+		return "policyholder-details";	
 	}
 	
 	@PostMapping("/searchPolicyholders/editPolicyHolderDetails")
@@ -50,5 +48,4 @@ public class PolicyHolderController {
 		
 		return "policyholders-results";
 	}
-
 }

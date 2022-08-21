@@ -34,7 +34,7 @@ public class PolicyHolder {
 	@Column(name="address")
 	private String address;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "policyHolder", cascade = {CascadeType.PERSIST, CascadeType.DETACH, 
+	@OneToMany(mappedBy = "policyHolder", cascade = {CascadeType.PERSIST, CascadeType.DETACH, 
  			CascadeType.MERGE, CascadeType.REFRESH})
 	private List<Policy> policies;
 	
@@ -81,8 +81,15 @@ public class PolicyHolder {
 		if (claims == null) {
 			claims = new ArrayList<>();
 		}
-		claims.add(claim);
+		claims.add(claim);		
 		claim.setPolicyHolder(this);
 	}
+
+	@Override
+	public String toString() {
+		return "PolicyHolder [policyHolderNumber=" + policyHolderNumber + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", address=" + address + "]";
+	}
+	
 	
 }

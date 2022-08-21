@@ -7,11 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
-import com.simplehomeinsurance.claims_management_system.entity.Policy;
 import com.simplehomeinsurance.claims_management_system.entity.PolicyHolder;
 import com.simplehomeinsurance.claims_management_system.service.ClaimService;
 import com.simplehomeinsurance.claims_management_system.service.PolicyHolderService;
@@ -65,30 +65,36 @@ public class ClaimController {
 	}
 	
 	@GetMapping("addClaimDetails")
-	public String addClaimDetails(@ModelAttribute("policyHolderNumber") String policyHolderNumber,
+	public String addClaimDetails(@ModelAttribute("policyHolderNumber")
+									String policyholderNumber,
 									Model theModel) {
 		
-		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyHolderNumber);
-		
-		List<Policy> policies  = policyHolder.getPolicies();
+		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);
 		
 		Claim claim = new Claim();
 		
+		policyHolder.addClaim(claim);
+		
 		theModel.addAttribute("policyHolder", policyHolder);
-		
-		theModel.addAttribute("policies", policies);
-		
+
 		theModel.addAttribute("claim", claim);
 		
 		return "file-claim-form";
 	}
 	
-	@PostMapping("saveClaim")
-	public String saveClaim(@ModelAttribute("claim") Claim theClaim) {
+	@PostMapping("saveClaim/{policyHolderNumber}")
+	public String saveClaim(@PathVariable("policyHolderNumber") String policyHoldeNumber, 
+							@ModelAttribute("claim") Claim claim) {
 		
-		claimService.saveClaim(theClaim);
+		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyHoldeNumber);
 		
-		return "redirect:/dashboard/listClaims";
+		claim.setPolicyHolder(policyHolder);
+		
+		System.out.println(claim.toString());
+
+		claimService.saveClaim(claim);
+
+		return "redirect:/dashboard";
 	}
 	
 }
