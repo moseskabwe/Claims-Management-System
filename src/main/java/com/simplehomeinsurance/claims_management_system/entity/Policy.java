@@ -2,7 +2,9 @@ package com.simplehomeinsurance.claims_management_system.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,18 +48,11 @@ public class Policy {
 	@Column(name="in_force")
 	private String inForce;
 	
-//	@OneToMany(mappedBy = "policy")
-//	private List<Claim> claims;
-	
-	/*private LinkedHashMap<String, String> lossTypeOptions;*/
+	@OneToMany(mappedBy = "policy")
+	private Set<Claim> claims;
 	
 	public Policy() {
-		
-//		lossTypeOptions = new LinkedHashMap<>();
-//		
-//		lossTypeOptions.put("D", "Damage");
-//		lossTypeOptions.put("F", "Fire");
-//		lossTypeOptions.put("T", "Theft");
+	
 	}
 
 	public String getPolicyNumber() {
@@ -73,11 +68,11 @@ public class Policy {
 	}
 
 	public String getInceptionDate() {
-		return DateUtils.formatDate(endDate);
+		return DateUtils.formatDate(inceptionDate);
 	}
 
 	public String getEndDate() {
-		return DateUtils.formatDate(endDate);
+		return DateUtils.formatDate(inceptionDate);
 	}
 
 	public String getPolicyType() {
@@ -96,19 +91,19 @@ public class Policy {
 		this.policyType = policyType;
 	}
 
-//	public List<Claim> getClaims() {
-//		return claims;
-//	}
+	public List<Claim> getClaims() {
+		if (this.claims == null) {
+            this.claims = new HashSet<>();
+        }
+		List<Claim> claimsList = new ArrayList<>(this.claims);
+		return claimsList;
+	}
 	
-//	public void addClaim(Claim claim) {
-//		if (claims == null) {
-//			claims = new ArrayList<>();
-//		}
-//		claims.add(claim);
-//		claim.setPolicy(this);
-//	}
-	
-//	public LinkedHashMap<String, String> getLossTypeOptions() {
-//		return lossTypeOptions;
-//	}
+	public void addClaim(Claim claim) {
+		if (claims == null) {
+			claims = new HashSet<>();
+		}
+		claims.add(claim);
+		claim.setPolicy(this);
+	}
 }

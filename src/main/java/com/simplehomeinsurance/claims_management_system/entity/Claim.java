@@ -50,6 +50,10 @@ public class Claim {
 	private PolicyHolder policyHolder;
 	
 	@ManyToOne
+	@JoinColumn(name="policy_number")
+	private Policy policy;
+	
+	@ManyToOne
 	@JoinColumn(name="csr_number")
 	private CustomerServiceRep customerServiceRep;
 	
@@ -106,6 +110,14 @@ public class Claim {
 		this.policyHolder = policyHolder;
 	}
 	
+	public Policy getPolicy() {
+		return policy;
+	}
+
+	public void setPolicy(Policy policy) {
+		this.policy = policy;
+	}
+
 	public CustomerServiceRep getCustomerServiceRep() {
 		return customerServiceRep;
 	}

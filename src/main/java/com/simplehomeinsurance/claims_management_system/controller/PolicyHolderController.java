@@ -2,6 +2,8 @@ package com.simplehomeinsurance.claims_management_system.controller;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
+import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.simplehomeinsurance.claims_management_system.entity.Claim;
+import com.simplehomeinsurance.claims_management_system.entity.Policy;
 import com.simplehomeinsurance.claims_management_system.entity.PolicyHolder;
 import com.simplehomeinsurance.claims_management_system.service.PolicyHolderService;
 
@@ -32,13 +36,36 @@ public class PolicyHolderController {
 	}
 	
 	@GetMapping("/searchPolicyholders/showPolicyholderDetails")
-	public String showPaymentDetail(@ModelAttribute("policyholderNumber") String policyholderNumber, Model theModel) {
+	public String showPolicyholderDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, Model theModel) {
 		
 		PolicyHolder policyholder = policyHolderService.getPolicyHolder(policyholderNumber);
 		
+		//List<Policy> policyList = policyholder.getPolicies();
+		
+		List<Claim> claimList = policyholder.getClaims();
+		
 		theModel.addAttribute("policyholder", policyholder);
 		
-		return "policyholder-details";	
+		//theModel.addAttribute("policyList", policyList);
+		
+		theModel.addAttribute("claimList", claimList);
+		
+		return "policyholder-details";
+	}
+	
+	@GetMapping("/searchPolicyholders/showPolicyDetails/{policyholder.policyHolderNumber}")
+	public String showPolicyDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, Model theModel) {
+		
+		PolicyHolder policyholder = policyHolderService.getPolicyHolder(policyholderNumber);
+		
+		List<Policy> policyList = policyholder.getPolicies();
+		
+		
+		theModel.addAttribute("policyholder", policyholder);
+		
+		theModel.addAttribute("policyList", policyList);
+		
+		return "policies";
 	}
 	
 	@PostMapping("/searchPolicyholders/editPolicyHolderDetails")

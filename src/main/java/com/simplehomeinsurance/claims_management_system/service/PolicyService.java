@@ -1,5 +1,7 @@
 package com.simplehomeinsurance.claims_management_system.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +20,11 @@ public class PolicyService {
 	public Policy getPolicy(String policyNumber) {
 		
 		return policyDAO.getPolicy(policyNumber);
+	}
+	
+	@Transactional
+	public List<Policy> getPolicies() {
+		
+		return policyDAO.getPolicyList();
 	}
 }

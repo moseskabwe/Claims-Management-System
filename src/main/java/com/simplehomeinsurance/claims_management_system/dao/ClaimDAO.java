@@ -31,7 +31,7 @@ public class ClaimDAO {
 
 		Session currentSession = sessionFactory.getCurrentSession();
 
-		currentSession.saveOrUpdate(theClaim);
+		currentSession.save(theClaim);
 	}
 
 	public Claim getClaim(String claimNumber) {

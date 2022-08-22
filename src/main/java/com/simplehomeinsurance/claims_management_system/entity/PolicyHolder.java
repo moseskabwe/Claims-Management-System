@@ -1,15 +1,17 @@
 package com.simplehomeinsurance.claims_management_system.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name="policyholder")
@@ -34,12 +36,11 @@ public class PolicyHolder {
 	@Column(name="address")
 	private String address;
 	
-	@OneToMany(mappedBy = "policyHolder", cascade = {CascadeType.PERSIST, CascadeType.DETACH, 
- 			CascadeType.MERGE, CascadeType.REFRESH})
-	private List<Policy> policies;
+	@OneToMany(mappedBy = "policyHolder", fetch = FetchType.EAGER)
+	private Set<Policy> policies;
 	
 	@OneToMany(mappedBy = "policyHolder", fetch = FetchType.EAGER)
-	private List<Claim> claims;
+	private Set<Claim> claims;
 	
 	public PolicyHolder() {
 		
@@ -70,16 +71,24 @@ public class PolicyHolder {
 	}
 
 	public List<Policy> getPolicies() {
-		return policies;
+		if (this.policies == null) {
+            this.policies = new HashSet<>();
+        }
+		List<Policy> policyList = new ArrayList<>(this.policies);
+		return policyList;
 	}
 
 	public List<Claim> getClaims() {
-		return claims;
+		if (this.claims == null) {
+            this.claims = new HashSet<>();
+        }
+		List<Claim> claimsList = new ArrayList<>(this.claims);
+		return claimsList;
 	}
 	
 	public void addClaim(Claim claim) {
 		if (claims == null) {
-			claims = new ArrayList<>();
+			claims = new HashSet<>();
 		}
 		claims.add(claim);		
 		claim.setPolicyHolder(this);

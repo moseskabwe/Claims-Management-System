@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
+import com.simplehomeinsurance.claims_management_system.entity.Policy;
 import com.simplehomeinsurance.claims_management_system.entity.PolicyHolder;
 import com.simplehomeinsurance.claims_management_system.service.ClaimService;
 import com.simplehomeinsurance.claims_management_system.service.PolicyHolderService;
+import com.simplehomeinsurance.claims_management_system.service.PolicyService;
 
 @Controller
 @RequestMapping("dashboard/")
@@ -25,6 +27,9 @@ public class ClaimController {
 	
 	@Autowired
 	private PolicyHolderService policyHolderService;
+	
+	@Autowired
+	private PolicyService policyService;
 	
 	@GetMapping("listClaims")
 	public String showClaims(Model theModel) {
@@ -61,34 +66,44 @@ public class ClaimController {
 	@GetMapping("/fileClaim")
 	public String fileClaim() {
 
-		return "file-claim";
+		return "search-policyholders";
 	}
 	
-	@GetMapping("addClaimDetails")
-	public String addClaimDetails(@ModelAttribute("policyHolderNumber")
+	@GetMapping("addClaimDetails/{policyholder.policyHolderNumber}/{policy.policyNumber}")
+	public String addClaimDetails(@PathVariable("policyholder.policyHolderNumber")
 									String policyholderNumber,
+									@PathVariable("policy.policyNumber")
+									String policyNumber,
 									Model theModel) {
 		
 		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);
+		
+		Policy policy = policyService.getPolicy(policyNumber);
 		
 		Claim claim = new Claim();
 		
 		policyHolder.addClaim(claim);
 		
 		theModel.addAttribute("policyHolder", policyHolder);
+		
+		theModel.addAttribute("policy", policy);
 
 		theModel.addAttribute("claim", claim);
 		
 		return "file-claim-form";
 	}
 	
-	@PostMapping("saveClaim/{policyHolderNumber}")
-	public String saveClaim(@PathVariable("policyHolderNumber") String policyHoldeNumber, 
+	@PostMapping("addClaimDetails/{policyholder.policyHolderNumber}/{policy.policyNumber}")
+	public String saveClaim(@PathVariable("policyholder.policyHolderNumber") String policyHoldeNumber,
+							@PathVariable("policy.policyNumber") String policyNumber,
 							@ModelAttribute("claim") Claim claim) {
 		
 		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyHoldeNumber);
 		
+		Policy policy = policyService.getPolicy(policyNumber);
+		
 		claim.setPolicyHolder(policyHolder);
+		claim.setPolicy(policy);
 		
 		System.out.println(claim.toString());
 
@@ -96,5 +111,4 @@ public class ClaimController {
 
 		return "redirect:/dashboard";
 	}
-	
 }
