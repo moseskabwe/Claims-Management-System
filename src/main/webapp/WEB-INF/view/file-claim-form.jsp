@@ -11,12 +11,13 @@
 		<h1>Claim Form</h1>
 		<hr>	
 		
-		<form:form action="saveClaim/${policyHolderNumber}" modelAttribute="claim" method="POST">
+		<form:form action="#" modelAttribute="claim" method="POST">
 			
 			<form:hidden path="claimNumber"/> 
 			
-			Policyholder Number: ${policyHolderNumber} <br>
+			Policyholder Number: ${policyHolder.policyHolderNumber} <br>
 			Policyholder Name: ${policyHolder.firstName} ${policyHolder.lastName}<br>
+			Policy Number: ${policy.policyNumber}<br>
 			<br>
 			Loss Type: 
 			<form:select path="lossType">

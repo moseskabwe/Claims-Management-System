@@ -22,10 +22,10 @@
 			
 			<c:forEach var="policyholder" items="${policyholderList}">	
 			
-				<c:url var="selectPolicyholder" value="addClaimDetails">
+				<c:url var="selectPolicyholder" value="/searchPolicyholders/showPolicyholderDetails">
 					<c:param name="policyHolderNumber" value="${policyholder.policyHolderNumber}"/>
 				</c:url>
-									
+
 				<tr>
 					<td>${policyholder.policyHolderNumber}</td>
 					<td>${policyholder.firstName}</td>
