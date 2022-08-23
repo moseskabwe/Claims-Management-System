@@ -33,6 +33,9 @@ public class DeclinedClaim {
 	@Temporal(TemporalType.DATE)
 	private Date declinedDate;
 	
+	@Column(name="reason")
+	private String reason;
+	
 	public DeclinedClaim() {
 		
 	}
@@ -64,5 +67,13 @@ public class DeclinedClaim {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
 }
