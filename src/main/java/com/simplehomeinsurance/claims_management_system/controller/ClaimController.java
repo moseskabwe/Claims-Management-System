@@ -41,11 +41,12 @@ public class ClaimController {
 		return "claims";
 	}
 	
-	@GetMapping("/listClaims/showClaimDetails")
+	@GetMapping("listClaims/showClaimDetails")
 	public String showClaimDetails(@ModelAttribute("claimNumber") String claimNumber,
 									Model theModel) {
 		
 		Claim theClaim = claimService.getClaim(claimNumber);
+		
 		
 		theModel.addAttribute("claim", theClaim);
 		

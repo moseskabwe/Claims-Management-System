@@ -2,8 +2,6 @@ package com.simplehomeinsurance.claims_management_system.controller;
 
 import java.util.List;
 
-import org.hibernate.Hibernate;
-import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +34,8 @@ public class PolicyHolderController {
 	}
 	
 	@GetMapping("/searchPolicyholders/showPolicyholderDetails")
-	public String showPolicyholderDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, Model theModel) {
+	public String showPolicyholderDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, 
+											Model theModel) {
 		
 		PolicyHolder policyholder = policyHolderService.getPolicyHolder(policyholderNumber);
 		
