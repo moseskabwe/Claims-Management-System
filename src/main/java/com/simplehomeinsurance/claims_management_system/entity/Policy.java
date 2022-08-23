@@ -46,7 +46,7 @@ public class Policy {
 	private String policyType;
 	
 	@Column(name="in_force")
-	private String inForce;
+	private int inForce;
 	
 	@OneToMany(mappedBy = "policy")
 	private Set<Claim> claims;
@@ -79,7 +79,7 @@ public class Policy {
 		return policyType;
 	}
 
-	public String getInForce() {
+	public int getInForce() {
 		return inForce;
 	}
 
