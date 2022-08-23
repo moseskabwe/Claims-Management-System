@@ -32,7 +32,12 @@ public class ClaimService {
 	public void saveClaim(Claim theClaim) {
 		
 		claimDAO.saveClaim(theClaim);
+	}
+	
+	@Transactional
+	public void updateClaim(Claim theClaim) {
 		
+		claimDAO.updateClaim(theClaim);
 	}
 	
 }

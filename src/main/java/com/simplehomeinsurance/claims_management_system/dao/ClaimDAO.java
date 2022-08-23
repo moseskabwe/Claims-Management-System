@@ -33,6 +33,13 @@ public class ClaimDAO {
 
 		currentSession.save(theClaim);
 	}
+	
+	public void updateClaim(Claim theClaim) {
+
+		Session currentSession = sessionFactory.getCurrentSession();
+
+		currentSession.update(theClaim);
+	}
 
 	public Claim getClaim(String claimNumber) {
 
