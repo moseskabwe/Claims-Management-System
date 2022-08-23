@@ -39,7 +39,7 @@
 		
 			<c:forEach var="claim" items="${claimList}">
 			
-				<c:url var="showClaimDetails" value="/listClaims/showClaimDetails">
+				<c:url var="showClaimDetails" value="/dashboard/listClaims/showClaimDetails">
 					<c:param name="claimNumber" value="${claim.claimNumber}"/>
 				</c:url>
 			
