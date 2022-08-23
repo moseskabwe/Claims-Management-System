@@ -33,7 +33,7 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "claims_sequence")
     @GenericGenerator(
         name = "claims_sequence", 
-        strategy = "com.simplehomeinsurance.claims_management_system.idgenerator.StringPrefixedSequenceIdGenerator", 
+        strategy = "com.simplehomeinsurance.claims_management_system.utils.StringPrefixedSequenceIdGenerator", 
         parameters = {
             @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "49"),
             @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "CM"),
