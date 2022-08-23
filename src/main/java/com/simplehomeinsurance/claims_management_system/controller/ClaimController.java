@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
+import com.simplehomeinsurance.claims_management_system.entity.ClaimPayment;
+import com.simplehomeinsurance.claims_management_system.entity.DeclinedClaim;
 import com.simplehomeinsurance.claims_management_system.entity.Policy;
 import com.simplehomeinsurance.claims_management_system.entity.PolicyHolder;
 import com.simplehomeinsurance.claims_management_system.service.ClaimService;
@@ -47,8 +49,15 @@ public class ClaimController {
 		
 		Claim theClaim = claimService.getClaim(claimNumber);
 		
+		DeclinedClaim declinedClaim = theClaim.getDeclinedClaim();
+		
+		List<ClaimPayment> paymentsList = theClaim.getPayments();
 		
 		theModel.addAttribute("claim", theClaim);
+		
+		theModel.addAttribute("declinedClaim", declinedClaim);
+		
+		theModel.addAttribute("paymentsList", paymentsList);
 		
 		return "claim-details";
 	}
