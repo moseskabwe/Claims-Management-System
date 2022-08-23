@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -79,10 +78,10 @@ public class ClaimController {
 		return "search-policyholders";
 	}
 	
-	@GetMapping("addClaimDetails/{policyholder.policyHolderNumber}/{policy.policyNumber}")
-	public String addClaimDetails(@PathVariable("policyholder.policyHolderNumber")
+	@GetMapping("addClaimDetails/")
+	public String addClaimDetails(@ModelAttribute("policyHolderNumber")
 									String policyholderNumber,
-									@PathVariable("policy.policyNumber")
+									@ModelAttribute("policyNumber")
 									String policyNumber,
 									Model theModel) {
 		
@@ -103,9 +102,9 @@ public class ClaimController {
 		return "file-claim-form";
 	}
 	
-	@PostMapping("addClaimDetails/{policyholder.policyHolderNumber}/{policy.policyNumber}")
-	public String saveClaim(@PathVariable("policyholder.policyHolderNumber") String policyHoldeNumber,
-							@PathVariable("policy.policyNumber") String policyNumber,
+	@PostMapping("addClaimDetails/")
+	public String saveClaim(@ModelAttribute("policyHolderNumber") String policyHoldeNumber,
+							@ModelAttribute("policyNumber") String policyNumber,
 							@ModelAttribute("claim") Claim claim) {
 		
 		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyHoldeNumber);
@@ -114,8 +113,6 @@ public class ClaimController {
 		
 		claim.setPolicyHolder(policyHolder);
 		claim.setPolicy(policy);
-		
-		System.out.println(claim.toString());
 
 		claimService.saveClaim(claim);
 

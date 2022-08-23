@@ -36,8 +36,9 @@
 			<c:forEach var="policy" items="${policyList}">
 			
 				<c:url var="selectPolicy" 
-						value="/dashboard/addClaimDetails/${policyholder.policyHolderNumber}/${policy.policyNumber}">
+						value="/dashboard/addClaimDetails/">
 					<c:param name="policyNumber" value="${policy.policyNumber}"/>
+					<c:param name="policyHolderNumber" value="${policyholder.policyHolderNumber}"/>
 				</c:url>
 			
 				<tr>

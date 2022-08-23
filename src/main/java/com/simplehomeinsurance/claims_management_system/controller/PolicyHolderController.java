@@ -52,7 +52,7 @@ public class PolicyHolderController {
 		return "policyholder-details";
 	}
 	
-	@GetMapping("/searchPolicyholders/showPolicyDetails/{policyholder.policyHolderNumber}")
+	@GetMapping("/searchPolicyholders/showPolicyDetails")
 	public String showPolicyDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, Model theModel) {
 		
 		PolicyHolder policyholder = policyHolderService.getPolicyHolder(policyholderNumber);

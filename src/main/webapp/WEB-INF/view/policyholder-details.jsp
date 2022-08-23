@@ -20,7 +20,7 @@
 		
 		Address: ${policyholder.address}<br>
 		
-		<c:url var="showPolicyDetails" value="/searchPolicyholders/showPolicyDetails/${policyholder.policyHolderNumber}">
+		<c:url var="showPolicyDetails" value="/searchPolicyholders/showPolicyDetails">
 			<c:param name="policyHolderNumber" value="${policyholder.policyHolderNumber}"/>
 		</c:url>
 		
