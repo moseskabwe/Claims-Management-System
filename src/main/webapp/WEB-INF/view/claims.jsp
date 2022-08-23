@@ -19,17 +19,31 @@
 		<table>
 			<tr>
 				<th>Claim number</th>
-				<th>Adjuster</th>
-				<th>Filing Date</th>
 				<th>Status</th>
+				<th>Adjuster</th>
+				<th>Report Date</th>
+				<th>Policyholder Number</th>
+				
 			</tr>
 			
-			<c:forEach var="theClaim" items="${claimsList}">			
+			<c:forEach var="theClaim" items="${claimsList}">	
+			
+				<c:url var="showClaimDetails" value="/dashboard/listClaims/showClaimDetails">
+					<c:param name="claimNumber" value="${theClaim.claimNumber}"/>
+				</c:url>
+				
+				<c:url var="selectPolicyholder" value="/searchPolicyholders/showPolicyholderDetails">
+					<c:param name="policyHolderNumber" value="${theClaim.policyHolder.policyHolderNumber}"/>
+				</c:url>
+				
 				<tr>
-					<td>${theClaim.claimNumber}</td>
-					<td>${theClaim.adjuster.adjusterNumber}</td>
-					<td>${theClaim.filingDate}</td>
+					<td><a href="${showClaimDetails}">${theClaim.claimNumber}</a></td>
 					<td>${theClaim.status}</td>
+					<td>${theClaim.adjuster.firstName} ${theClaim.adjuster.lastName}</td>
+					<td>${theClaim.filingDate}</td>
+					<td><a href="${selectPolicyholder}">${theClaim.policyHolder.policyHolderNumber}</a></td>
+					
+					
 				</tr>
 			</c:forEach>
 			
