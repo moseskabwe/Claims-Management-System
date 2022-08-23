@@ -30,7 +30,7 @@ public class ClaimPaymentService {
 	}
 	
 	@Transactional
-	public void saveDeclinedClaim(ClaimPayment claimPayment) {
+	public void saveClaimPayment(ClaimPayment claimPayment) {
 		
 		claimPaymentDAO.saveClaimPayment(claimPayment);
 	}
