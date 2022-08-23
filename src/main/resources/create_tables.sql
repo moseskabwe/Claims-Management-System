@@ -113,6 +113,7 @@ CREATE TABLE `declined_claims` (
   `id` int(10) NOT NULL AUTO_INCREMENT UNIQUE,
   `claim_number` varchar(13) NOT NULL UNIQUE,
   `declined_date` date NOT NULL,
+  `reason` varchar(5000) DEFAULT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`claim_number`) REFERENCES `claim` (`claim_number`)
 ) AUTO_INCREMENT=11096;
