@@ -3,11 +3,13 @@ package com.simplehomeinsurance.claims_management_system.entity;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -74,13 +76,11 @@ public class Claim {
 	@Column(name="notes")
 	private String notes;
 	
-	@OneToOne(mappedBy = "claim", cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
- 			CascadeType.MERGE, CascadeType.REFRESH})
+	@OneToOne(mappedBy = "claim")
 	private DeclinedClaim declinedClaim;
 	
-	@OneToMany(mappedBy = "claim", cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
- 			CascadeType.MERGE, CascadeType.REFRESH})
-	private List<ClaimPayment> payments;
+	@OneToMany(mappedBy = "claim", fetch = FetchType.EAGER)
+	private Set<ClaimPayment> payments;
 	
 	public Claim() {
 	
@@ -183,12 +183,16 @@ public class Claim {
 	}
 
 	public List<ClaimPayment> getPayments() {
-		return payments;
+		if (payments == null) {
+			this.payments = new HashSet<>();
+		}
+		List<ClaimPayment> paymentsList = new ArrayList<>(this.payments);
+		return paymentsList;
 	}
 	
 	public void addPayment(ClaimPayment payment) {
 		if (payments == null) {
-			payments = new ArrayList<>();
+			payments = new HashSet<>();
 		}
 		payments.add(payment);
 		payment.setClaim(this);
