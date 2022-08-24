@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
-import com.simplehomeinsurance.claims_management_system.entity.PolicyHolder;
 
 @Repository
 public class ClaimDAO {
@@ -61,6 +60,83 @@ public class ClaimDAO {
 		Claim claim = currentSession.get(Claim.class, claimNumber);
 
 		return claim;
+	}
+	
+	public Long getNumberOfFireClaims() {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query query = currentSession.createQuery("select count(*) from Claim where lossType = 'Fire'");
+		
+		Long number = (Long) query.uniqueResult();
+
+		return number;
+	}
+	
+	public Long getNumberOfDamageClaims() {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query query = currentSession.createQuery("select count(*) from Claim where lossType = 'Damage'");
+		
+		Long number = (Long) query.uniqueResult();
+
+		return number;
+	}
+	
+	public Long getNumberOfTheftClaims() {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query query = currentSession.createQuery("select count(*) from Claim where lossType = 'Theft'");
+		
+		Long number = (Long) query.uniqueResult();
+
+		return number;
+	}
+	
+	public Long getNumberOfNewClaims() {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query query = currentSession.createQuery("select count(*) from Claim where status = 'First Notice'");	
+		
+		Long number = (Long) query.uniqueResult();
+
+		return number;
+	}
+	
+	public Long getNumberOfClaimsInProgress() {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query query = currentSession.createQuery("select count(*) from Claim where status  = 'In Progress'");		
+		
+		Long number = (Long) query.uniqueResult();
+
+		return number;
+	}
+	
+	public Long getNumberOfFinalisedClaims() {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query query = currentSession.createQuery("select count(*) from Claim where status = 'Finalised'");		
+		
+		Long number = (Long) query.uniqueResult();
+
+		return number;
+	}
+	
+	public Long getNumberTotalClaims() {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query query = currentSession.createQuery("select count(*) from Claim");		
+		
+		Long number = (Long) query.uniqueResult();
+
+		return number;
 	}
 	
 	public List<Claim> searchClaims(String searchTerm) {

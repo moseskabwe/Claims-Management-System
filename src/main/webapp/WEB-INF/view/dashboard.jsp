@@ -11,7 +11,15 @@
 		<a href=dashboard/listClaims>Show all claims</a> <br>
 		<a href=dashboard/fileClaim>File a claim</a> <br>
 		<a href=dashboard/showPayments>Show all payments</a> <br>
-		<a href=dashboard/fileClaim>Search for a policyholder</a> <br>
+		<a href=dashboard/fileClaim>Search for a policyholder</a> <br> <br>
+		
+		Number of fire claims: ${stats[0]} <br>
+		Number of damage claims: ${stats[1]} <br>
+		Number of theft claims: ${stats[2]} <br>
+		Number of new claims: ${stats[3]} <br>
+		Number of claims in progress: ${stats[4]} <br>
+		Percentage of finalised claims: ${finalisedAverage}% <br>
+		
 		
 		<h2>Outstanding Claims</h2>
 		
