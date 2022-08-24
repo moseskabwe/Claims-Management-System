@@ -72,7 +72,7 @@
 				<c:param name="claimNumber" value="${claim.claimNumber}"/>
 			</c:url>
 			
-			<c:url var="finaliseClaim" value="/dashboard/payments/finaliseClaim">
+			<c:url var="finaliseClaim" value="/dashboard/finaliseClaim">
 				<c:param name="claimNumber" value="${claim.claimNumber}"/>
 			</c:url>
 			

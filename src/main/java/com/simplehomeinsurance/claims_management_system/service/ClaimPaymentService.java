@@ -26,7 +26,7 @@ public class ClaimPaymentService {
 	@Transactional
 	public ClaimPayment getClaimPayment(int paymentNumber){
 		
-		return claimPaymentDAO.getDeclinedClaim(paymentNumber);
+		return claimPaymentDAO.getClaimPayment(paymentNumber);
 	}
 	
 	@Transactional

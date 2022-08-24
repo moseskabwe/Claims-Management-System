@@ -20,14 +20,14 @@ public class ClaimPaymentDAO {
 
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		Query<ClaimPayment> theQuery = currentSession.createQuery("from ClaimPayment", ClaimPayment.class);
+		Query<ClaimPayment> theQuery = currentSession.createQuery("from ClaimPayment order by paymentDate desc", ClaimPayment.class);
 				
 		List<ClaimPayment> claimPaymentList = theQuery.getResultList();
 		
 		return claimPaymentList;
 	}
 
-	public ClaimPayment getDeclinedClaim(int paymentNumber) {
+	public ClaimPayment getClaimPayment(int paymentNumber) {
 
 		Session currentSession = sessionFactory.getCurrentSession();
 		

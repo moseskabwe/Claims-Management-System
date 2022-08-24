@@ -18,7 +18,7 @@ import com.simplehomeinsurance.claims_management_system.service.ClaimService;
 import com.simplehomeinsurance.claims_management_system.utils.DateUtils;
 
 @Controller
-@RequestMapping("dashboard/payments")
+@RequestMapping("dashboard")
 public class ClaimPaymentController {
 	
 	@Autowired
@@ -38,16 +38,16 @@ public class ClaimPaymentController {
 		
 	}
 	
-	@GetMapping("/showPayments/showPaymentDetail")
-	public String showPaymentDetail(@ModelAttribute("paymentNumber") int paymentNumber, Model theModel) {
-		
-		ClaimPayment claimPayment = claimPaymentService.getClaimPayment(paymentNumber);
-		
-		theModel.addAttribute("claimPayment", claimPayment);
-		
-		return "";
-		
-	}
+//	@GetMapping("/showPayments/showPaymentDetail")
+//	public String showPaymentDetail(@ModelAttribute("paymentNumber") int paymentNumber, Model theModel) {
+//		
+//		ClaimPayment claimPayment = claimPaymentService.getClaimPayment(paymentNumber);
+//		
+//		theModel.addAttribute("claimPayment", claimPayment);
+//		
+//		return "";
+//		
+//	}
 	
 	@GetMapping("/finaliseClaim")
 	public String finaliseClaim(@ModelAttribute("claimNumber") String claimNumber, 
