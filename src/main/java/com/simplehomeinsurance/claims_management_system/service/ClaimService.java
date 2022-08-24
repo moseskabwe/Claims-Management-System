@@ -40,4 +40,9 @@ public class ClaimService {
 		claimDAO.updateClaim(theClaim);
 	}
 	
+	@Transactional
+	public List<Claim> searchClaims(String searchTerm) {
+		return claimDAO.getClaimsList();
+	}
+	
 }

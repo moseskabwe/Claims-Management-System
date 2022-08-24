@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
+import com.simplehomeinsurance.claims_management_system.entity.PolicyHolder;
 
 @Repository
 public class ClaimDAO {
@@ -49,4 +50,28 @@ public class ClaimDAO {
 
 		return claim;
 	}
+	
+	public List<Claim> searchClaims(String searchTerm) {
+		
+
+        Session currentSession = sessionFactory.getCurrentSession();
+        
+        Query<Claim> theQuery;
+        
+        if (searchTerm != null && searchTerm.trim().length() > 0) {
+
+            theQuery = currentSession.createQuery("from Claim where lower(claimNumber) like :name "
+            										+ "or lower(policyHolder) like :name "
+            										+ "or lower(policy) like :name", Claim.class);
+            theQuery.setParameter("name", "%" + searchTerm.toLowerCase() + "%");
+        
+        } else {
+            theQuery =currentSession.createQuery("from Claim", Claim.class);            
+        }
+        
+        List<Claim> claimsList = theQuery.getResultList();
+                     
+        return claimsList;
+	}
+	
 }
