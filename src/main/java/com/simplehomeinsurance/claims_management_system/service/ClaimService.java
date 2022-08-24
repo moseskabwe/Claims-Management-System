@@ -44,5 +44,10 @@ public class ClaimService {
 	public List<Claim> searchClaims(String searchTerm) {
 		return claimDAO.getClaimsList();
 	}
+
+	@Transactional
+	public List<Claim> getDashboardClaimsList() {
+		return claimDAO.getDashboardClaimsList();
+	}
 	
 }

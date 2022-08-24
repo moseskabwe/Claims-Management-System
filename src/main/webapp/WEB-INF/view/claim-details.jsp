@@ -4,6 +4,11 @@
 	<head>
 		<title>
 			Claim Details
+			
+			<c:url var="finaliseClaim" value="/dashboard/finaliseClaim">
+				<c:param name="claimNumber" value="${claim.claimNumber}"/>
+			</c:url>
+			
 		</title>		
 	</head>
 	<body>
@@ -49,14 +54,20 @@
 				<tr>
 					<th>Date</th>
 					<th>Amount</th>
+					<th>Notes</th>
 				</tr>
 				<c:forEach var="payment" items="${paymentsList}">	
 					<tr>
 						<td>${payment.paymentDate}</td>
 						<td>${payment.paymentAmount}</td>
+						<td>${payment.notes}</td>
 					</tr>
 				</c:forEach>				
-			</table>			
+			</table>
+			
+			
+			
+			<a href="${finaliseClaim}">Add a payment</a>			
 		</c:if>
 		
 		<c:if test = "${claim.status == 'Declined'}">
@@ -71,11 +82,7 @@
 			<c:url var="declineClaim" value="/declineClaim">
 				<c:param name="claimNumber" value="${claim.claimNumber}"/>
 			</c:url>
-			
-			<c:url var="finaliseClaim" value="/dashboard/finaliseClaim">
-				<c:param name="claimNumber" value="${claim.claimNumber}"/>
-			</c:url>
-			
+					
 			<h2>Decision</h2>
 			<a href="${finaliseClaim}">Finalise Claim</a> | <a href="${declineClaim}">Decline Claim</a>			
 		</c:if>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
 import com.simplehomeinsurance.claims_management_system.entity.ClaimPayment;
@@ -48,6 +49,11 @@ public class ClaimController {
 		
 		Claim theClaim = claimService.getClaim(claimNumber);
 		
+		if (theClaim.getStatus().equalsIgnoreCase("First Notice")) {
+			theClaim.setStatus("In Progress");
+			claimService.updateClaim(theClaim);
+		}
+		
 		DeclinedClaim declinedClaim = theClaim.getDeclinedClaim();
 		
 		List<ClaimPayment> paymentsList = theClaim.getPayments();
@@ -61,24 +67,24 @@ public class ClaimController {
 		return "claim-details";
 	}
 	
-	@GetMapping("/listClaims/editClaim")
-	public String editClaim(@ModelAttribute("claimNumber") String claimNumber,
-									Model theModel) {
-		
-		Claim theClaim = claimService.getClaim(claimNumber);
-		
-		theModel.addAttribute("claim", theClaim);
-		
-		return "edit-claim";
-	}
+//	@GetMapping("/listClaims/editClaim")
+//	public String editClaim(@ModelAttribute("claimNumber") String claimNumber,
+//									Model theModel) {
+//		
+//		Claim theClaim = claimService.getClaim(claimNumber);
+//		
+//		theModel.addAttribute("claim", theClaim);
+//		
+//		return "edit-claim";
+//	}
 	
-	@GetMapping("/fileClaim")
+	@GetMapping("fileClaim")
 	public String fileClaim() {
 
 		return "search-policyholders";
 	}
 	
-	@GetMapping("addClaimDetails/")
+	@GetMapping("addClaimDetails")
 	public String addClaimDetails(@ModelAttribute("policyHolderNumber")
 									String policyholderNumber,
 									@ModelAttribute("policyNumber")
@@ -102,7 +108,7 @@ public class ClaimController {
 		return "file-claim-form";
 	}
 	
-	@PostMapping("addClaimDetails/")
+	@PostMapping("addClaimDetails")
 	public String saveClaim(@ModelAttribute("policyHolderNumber") String policyHoldeNumber,
 							@ModelAttribute("policyNumber") String policyNumber,
 							@ModelAttribute("claim") Claim claim) {

@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <html>
 	<head>
@@ -7,7 +8,14 @@
 		</title>		
 	</head>
 	<body>
-		<h1>Finalise Claim Number ${claim.claimNumber}</h1>
+		<c:if test="${claim.status == 'In Progress'}">
+			<h1>Finalise Claim Number ${claim.claimNumber}</h1>
+		</c:if>
+		
+		<c:if test="${claim.status == 'Finalised'}">
+			<h1>Add Payment to Claim Number ${claim.claimNumber}</h1>
+		</c:if>
+		
 		<hr>
 		
 		<form:form action="#" modelAttribute="payment" method="POST">

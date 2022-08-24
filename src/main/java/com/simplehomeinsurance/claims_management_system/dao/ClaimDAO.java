@@ -27,6 +27,18 @@ public class ClaimDAO {
 		
 		return claims;
 	}
+	
+	public List<Claim> getDashboardClaimsList() {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query<Claim> theQuery = currentSession.createQuery("from Claim where status in ('In Progress',"
+							+ "	'First Notice') order by filingDate desc", Claim.class);
+		
+		List<Claim> claims = theQuery.getResultList();
+		
+		return claims;
+	}
 
 	public void saveClaim(Claim theClaim) {
 
@@ -52,7 +64,6 @@ public class ClaimDAO {
 	}
 	
 	public List<Claim> searchClaims(String searchTerm) {
-		
 
         Session currentSession = sessionFactory.getCurrentSession();
         
@@ -61,8 +72,8 @@ public class ClaimDAO {
         if (searchTerm != null && searchTerm.trim().length() > 0) {
 
             theQuery = currentSession.createQuery("from Claim where lower(claimNumber) like :name "
-            										+ "or lower(policyHolder) like :name "
-            										+ "or lower(policy) like :name", Claim.class);
+            										+ "or lower(policyHolder) like :name ", 
+            										Claim.class);
             theQuery.setParameter("name", "%" + searchTerm.toLowerCase() + "%");
         
         } else {
