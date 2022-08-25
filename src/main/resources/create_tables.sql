@@ -3,41 +3,22 @@ USE `simple_home_insurance`;
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
+  `id` int(10) NOT NULL UNIQUE,
+  `first_name` varchar(45) DEFAULT NULL,
+  `last_name` varchar(45) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `phone_number` varchar(45) DEFAULT NULL,
   `username` varchar(50) NOT NULL UNIQUE,
   `password` char(68) NOT NULL,
   `enabled` tinyint(1) NOT NULL,
-  PRIMARY KEY (`username`)
+  PRIMARY KEY (`id`)
 );
 
 DROP TABLE IF EXISTS `authorities`;
 CREATE TABLE `authorities` (
-  `username` varchar(50) NOT NULL,
+  `username` varchar(50) NOT NULL UNIQUE,
   `authority` varchar(50) NOT NULL,
-  UNIQUE KEY `authorities_idx_1` (`username`,`authority`),
-  CONSTRAINT `authorities_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
-);
-
-DROP TABLE IF EXISTS `adjuster`;
-CREATE TABLE `adjuster` (
-  `id` int(10) NOT NULL UNIQUE,
-  `first_name` varchar(45) DEFAULT NULL,
-  `last_name` varchar(45) DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
-  `phone_number` varchar(45) DEFAULT NULL,
-  `username` varchar(50) NOT NULL UNIQUE,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`username`) REFERENCES `users` (`username`)
-);
-
-DROP TABLE IF EXISTS `customer_service_rep`;
-CREATE TABLE `customer_service_rep` (
-  `id` int(10) NOT NULL UNIQUE,
-  `first_name` varchar(45) DEFAULT NULL,
-  `last_name` varchar(45) DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
-  `phone_number` varchar(45) DEFAULT NULL,
-  `username` varchar(50) NOT NULL UNIQUE,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`username`),
   FOREIGN KEY (`username`) REFERENCES `users` (`username`)
 );
 
@@ -77,7 +58,6 @@ DROP TABLE IF EXISTS `claim`;
 CREATE TABLE `claim` (
   `claim_number` varchar(13) NOT NULL UNIQUE,
   `adjuster_number` int(10) DEFAULT NULL,
-  `csr_number` int(10) DEFAULT NULL,
   `policyholder_number` varchar(13) NOT NULL,
   `policy_number` varchar(13) NOT NULL,
   `loss_type` enum('Damage', 'Fire', 'Theft') NOT NULL,
@@ -88,14 +68,13 @@ CREATE TABLE `claim` (
   PRIMARY KEY (`claim_number`),
   FOREIGN KEY (`policyholder_number`) REFERENCES `policyholder` (`id`),
   FOREIGN KEY (`policy_number`) REFERENCES `policy` (`policy_number`),
-  FOREIGN KEY (`adjuster_number`) REFERENCES `adjuster` (`id`),
-  FOREIGN KEY (`csr_number`) REFERENCES `customer_service_rep` (`id`)
+  FOREIGN KEY (`adjuster_number`) REFERENCES `users` (`id`)
 );
 
 DROP TABLE IF EXISTS `claims_sequence`;
 CREATE TABLE `claims_sequence` (
-	next_val int NOT NULL
-    );
+  `next_val` int NOT NULL
+);
 
 DROP TABLE IF EXISTS `claim_payment`;
 CREATE TABLE `claim_payment` (
