@@ -31,6 +31,40 @@
 		Number of claims in progress: ${stats[4]} <br>
 		Percentage of finalised claims: ${finalisedAverage}% <br>
 		
+		<security:authorize access="hasRole('ADJUSTER')">
+		<h2>My Outstanding Claims</h2>
+		
+			<table>
+				<tr>
+					<th>Claim Number</th>
+					<th>Policyholder Number</th>
+					<th>Policy Type</th>
+					<th>Loss Type</th>
+					<th>Incident Date</th>
+					<th>Report Date</th>
+					<th>Adjuster</th>
+					<th>Status</th>
+				</tr>
+				
+				<c:forEach var="myClaim" items="${myClaims}">	
+					
+					<c:url var="showClaimDetails" value="/dashboard/listClaims/showClaimDetails">
+						<c:param name="claimNumber" value="${myClaim.claimNumber}"/>
+					</c:url>
+					
+					<tr>
+						<td><a href="${showClaimDetails}">${myClaim.claimNumber}</a></td>
+						<td>${myClaim.policyHolder.policyHolderNumber}</td>
+						<td>${myClaim.policy.policyType}</td>
+						<td>${myClaim.lossType}</td>
+						<td>${myClaim.incidentDate}</td>
+						<td>${myClaim.filingDate}</td>
+						<td>${myClaim.adjuster.firstName} ${myClaim.adjuster.lastName}</td>
+						<td>${myClaim.status}</td>								
+					</tr>
+				</c:forEach>
+			</table>
+		</security:authorize>
 		
 		<h2>Outstanding Claims</h2>
 		

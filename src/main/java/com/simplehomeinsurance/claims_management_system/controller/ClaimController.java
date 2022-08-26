@@ -57,9 +57,11 @@ public class ClaimController {
 		
 		if (request.isUserInRole("ROLE_ADJUSTER")) {
 			
-			List<Claim> myClaims = user.getClaims();
+			List<Claim> myClaims = claimService.getMyClaims(user.getUserId());
 			
 			model.addAttribute("myClaims", myClaims);
+			
+			model.addAttribute("user", user);
 		}
 		
 		return "my-claims";

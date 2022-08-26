@@ -51,7 +51,7 @@ public class HomeController {
 		
 		if (request.isUserInRole("ROLE_ADJUSTER")) {
 			
-			List<Claim> myClaims = user.getClaims();
+			List<Claim> myClaims = claimService.getMyOutstandingClaims(user.getUserId());
 			
 			model.addAttribute("role", "Adjuster");
 			model.addAttribute("myClaims", myClaims);

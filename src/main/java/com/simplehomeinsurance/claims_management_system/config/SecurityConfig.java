@@ -31,6 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/policyholders/showPolicyDetails").hasRole("CSR")
 			.antMatchers("/dashboard/addClaimDetails").hasRole("CSR")
 			.antMatchers("/dashboard/finaliseClaim").hasRole("ADJUSTER")
+			.antMatchers("/dashboard/myClaims").hasRole("ADJUSTER")
 			.antMatchers("/declineClaim").hasRole("ADJUSTER")
 			.anyRequest().authenticated()
 			.and()

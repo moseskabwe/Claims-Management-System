@@ -14,8 +14,8 @@
 			<input type="submit" value="Logout"/>
 		</form:form>
 		
-		Logged in as ${user.firstName}, ${role}. <br>
-		<a href=dashboard>Dashboard</a> <br>
+		Logged in as ${user.firstName} ${user.lastName}. <br>
+		<a href=${pageContext.request.contextPath}/dashboard>Dashboard</a> <br>
 		
 		<h2>My Claims</h2>
 		
