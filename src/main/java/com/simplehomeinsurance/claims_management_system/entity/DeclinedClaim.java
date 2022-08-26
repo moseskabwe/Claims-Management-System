@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import com.simplehomeinsurance.claims_management_system.utils.DateUtils;
 
@@ -33,6 +34,7 @@ public class DeclinedClaim {
 	@Temporal(TemporalType.DATE)
 	private Date declinedDate;
 	
+	@NotNull(message="Required")
 	@Column(name="reason")
 	private String reason;
 	

@@ -4,11 +4,16 @@ import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -126,19 +131,42 @@ public class ClaimController {
 	}
 	
 	@PostMapping("addClaimDetails")
-	public String saveClaim(@ModelAttribute("policyHolderNumber") String policyHoldeNumber,
+	public String saveClaim(@ModelAttribute("policyHolderNumber") String policyholderNumber,
 							@ModelAttribute("policyNumber") String policyNumber,
-							@ModelAttribute("claim") Claim claim) {
+							@Valid @ModelAttribute("claim") Claim claim,
+							BindingResult bindingResult,
+							Model theModel) {
 		
-		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyHoldeNumber);
-		
-		Policy policy = policyService.getPolicy(policyNumber);
-		
-		claim.setPolicyHolder(policyHolder);
-		claim.setPolicy(policy);
+		if (bindingResult.hasErrors()) {
+			
+			PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);
+			
+			Policy policy = policyService.getPolicy(policyNumber);
+			
+			//Claim newClaim = new Claim();
+			
+			policyHolder.addClaim(claim);
+			
+			theModel.addAttribute("policyHolder", policyHolder);
+			
+			theModel.addAttribute("policy", policy);
 
-		claimService.saveClaim(claim);
-
-		return "redirect:/dashboard";
+			theModel.addAttribute("claim", claim);
+			
+			return "file-claim-form";
+		
+		} else {
+		
+			PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);
+			
+			Policy policy = policyService.getPolicy(policyNumber);
+			
+			claim.setPolicyHolder(policyHolder);
+			claim.setPolicy(policy);
+	
+			claimService.saveClaim(claim);
+	
+			return "redirect:/dashboard";
+		}
 	}
 }

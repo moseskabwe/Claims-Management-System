@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -58,10 +59,12 @@ public class Claim {
 	@Column(name="loss_type")
 	private String lossType;
 	
+	@NotNull(message="Required")
 	@Column(name="incident_date")
 	@Temporal(TemporalType.DATE)
 	private Date incidentDate;
 	
+	@NotNull(message="Required")
 	@Column(name="filing_date")
 	@Temporal(TemporalType.DATE)
 	private Date filingDate;

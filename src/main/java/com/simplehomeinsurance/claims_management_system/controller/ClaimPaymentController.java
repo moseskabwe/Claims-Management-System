@@ -3,9 +3,12 @@ package com.simplehomeinsurance.claims_management_system.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,25 +68,38 @@ public class ClaimPaymentController {
 	
 	@PostMapping("/finaliseClaim")
 	public String makePayment(@ModelAttribute("claimNumber") String claimNumber, 
-								@ModelAttribute("payment") ClaimPayment payment) {
+								@Valid @ModelAttribute("payment") ClaimPayment payment,
+								BindingResult bindingResult, Model model) {
 		
-		Claim claim = claimService.getClaim(claimNumber);
-		
-		claim.addPayment(payment);
-		
-		claim.setStatus("Finalised");
-		
-		claimService.updateClaim(claim);
-		
-		Date date = new Date();  
-		
-		payment.setClaim(claim);
-		
-		payment.setPaymentDate(DateUtils.formatDate(date));
-		
-		claimPaymentService.saveClaimPayment(payment);
-		
-		return "redirect:/dashboard/listClaims/showClaimDetails";
+		if (bindingResult.hasErrors()) {
+			
+			Claim claim = claimService.getClaim(claimNumber);
+			
+			model.addAttribute("payment", payment);
+			model.addAttribute("claim", claim);
+			
+			return "finalise-claim";
+			
+		} else {
+			
+			Claim claim = claimService.getClaim(claimNumber);
+			
+			claim.addPayment(payment);
+			
+			claim.setStatus("Finalised");
+			
+			claimService.updateClaim(claim);
+			
+			Date date = new Date();  
+			
+			payment.setClaim(claim);
+			
+			payment.setPaymentDate(DateUtils.formatDate(date));
+			
+			claimPaymentService.saveClaimPayment(payment);
+			
+			return "redirect:/dashboard/listClaims/showClaimDetails";
+			
+		}
 	}
-	
 }

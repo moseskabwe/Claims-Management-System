@@ -2,10 +2,16 @@ package com.simplehomeinsurance.claims_management_system.controller;
 
 import java.util.Date;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -24,6 +30,12 @@ public class DeclinedClaimController {
 	@Autowired
 	private ClaimService claimService;
 	
+	@InitBinder
+	public void initBinder(WebDataBinder dataBinder) {
+		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+	}
+	
 	@GetMapping("/declineClaim")
 	public String declineClaim(@ModelAttribute("claimNumber") String claimNumber, 
 								Model model) {
@@ -40,24 +52,36 @@ public class DeclinedClaimController {
 	
 	@PostMapping("/declineClaim")
 	public String saveDeclinedClaim(@ModelAttribute("claimNumber") String claimNumber, 
-									@ModelAttribute("declinedClaim") DeclinedClaim declinedClaim) {
+									@Valid @ModelAttribute("declinedClaim") DeclinedClaim declinedClaim,
+									BindingResult bindingResult, Model model) {
 		
-		Claim claim = claimService.getClaim(claimNumber);
+		if (bindingResult.hasErrors()) {
+			Claim claim = claimService.getClaim(claimNumber);
+			
+			model.addAttribute("declinedClaim", declinedClaim);
+			model.addAttribute("claim", claim);
+			
+			return "decline-claim";
 		
-		claim.setDeclinedClaim(declinedClaim);
-		
-		claim.setStatus("Declined");
-		
-		claimService.updateClaim(claim);
-		
-		Date date = new Date();  
-		
-		declinedClaim.setClaim(claim);
-		
-		declinedClaim.setDeclinedDate(DateUtils.formatDate(date));
-		
-		declinedClaimService.saveDeclinedClaim(declinedClaim);
-		
-		return "redirect:/dashboard/listClaims/showClaimDetails";
+		} else {
+			
+			Claim claim = claimService.getClaim(claimNumber);
+			
+			claim.setDeclinedClaim(declinedClaim);
+			
+			claim.setStatus("Declined");
+			
+			claimService.updateClaim(claim);
+			
+			Date date = new Date();  
+			
+			declinedClaim.setClaim(claim);
+			
+			declinedClaim.setDeclinedDate(DateUtils.formatDate(date));
+			
+			declinedClaimService.saveDeclinedClaim(declinedClaim);
+			
+			return "redirect:/dashboard/listClaims/showClaimDetails";
+		}	
 	}
 }
