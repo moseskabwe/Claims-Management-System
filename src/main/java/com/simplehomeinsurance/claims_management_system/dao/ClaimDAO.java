@@ -27,6 +27,30 @@ public class ClaimDAO {
 		return claims;
 	}
 	
+	public List<Claim> getMyOutstandingClaims(int userId) {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query<Claim> theQuery = currentSession.createQuery("from Claim where adjuster = " + userId 
+				+ " and status in ('In Progress','First Notice') order by filingDate desc", Claim.class);
+		
+		List<Claim> claims = theQuery.getResultList();
+		
+		return claims;
+	}
+	
+	public List<Claim> getMyClaims(int userId) {
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Query<Claim> theQuery = currentSession.createQuery("from Claim where adjuster = " + userId 
+													+ " order by filingDate desc", Claim.class);
+		
+		List<Claim> claims = theQuery.getResultList();
+		
+		return claims;
+	}
+	
 	public List<Claim> getDashboardClaimsList() {
 		
 		Session currentSession = sessionFactory.getCurrentSession();
@@ -139,26 +163,6 @@ public class ClaimDAO {
 		return number;
 	}
 	
-	public List<Claim> searchClaims(String searchTerm) {
 
-        Session currentSession = sessionFactory.getCurrentSession();
-        
-        Query<Claim> theQuery;
-        
-        if (searchTerm != null && searchTerm.trim().length() > 0) {
-
-            theQuery = currentSession.createQuery("from Claim where lower(claimNumber) like :name "
-            										+ "or lower(policyHolder) like :name ", 
-            										Claim.class);
-            theQuery.setParameter("name", "%" + searchTerm.toLowerCase() + "%");
-        
-        } else {
-            theQuery =currentSession.createQuery("from Claim", Claim.class);            
-        }
-        
-        List<Claim> claimsList = theQuery.getResultList();
-                     
-        return claimsList;
-	}
 	
 }

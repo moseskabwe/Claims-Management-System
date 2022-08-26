@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +20,12 @@ public class ClaimService {
 	public List<Claim> getClaimsList() {
 		
 		return claimDAO.getClaimsList();
+	}
+	
+	@Transactional
+	public List<Claim> getMyClaims(int userId) {
+		
+		return claimDAO.getMyClaims(userId);
 	}
 	
 	@Transactional
@@ -95,6 +99,10 @@ public class ClaimService {
 		return claimDAO.getNumberTotalClaims();
 	}
 	
-	
+	@Transactional
+	public List<Claim> getMyOutstandingClaims(int userId) {
+		
+		return claimDAO.getMyOutstandingClaims(userId);
+	}
 	
 }
