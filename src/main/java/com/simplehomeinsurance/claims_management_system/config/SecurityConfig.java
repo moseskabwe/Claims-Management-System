@@ -20,21 +20,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
-//		UserBuilder users = User.withDefaultPasswordEncoder();
-//		
-//		auth.inMemoryAuthentication()
-//			.withUser(users.username("tgreen").password("green741").roles("ADJUSTER"))
-//			.withUser(users.username("pking").password("king741").roles("CSR"));
-	
+
 		auth.jdbcAuthentication().dataSource(myDataSource);
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests()
-				.anyRequest().authenticated()
+			.antMatchers("/policyholders/showPolicyDetails").hasRole("CSR")
+			.antMatchers("/dashboard/addClaimDetails").hasRole("CSR")
+			.antMatchers("/dashboard/finaliseClaim").hasRole("ADJUSTER")
+			.antMatchers("/declineClaim").hasRole("ADJUSTER")
+			.anyRequest().authenticated()
 			.and()
 			.formLogin()
 				.loginPage("/showLoginPage")
