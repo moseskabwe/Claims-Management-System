@@ -32,7 +32,7 @@
 					<c:param name="claimNumber" value="${theClaim.claimNumber}"/>
 				</c:url>
 				
-				<c:url var="selectPolicyholder" value="/searchPolicyholders/showPolicyholderDetails">
+				<c:url var="selectPolicyholder" value="/policyholders/showPolicyholderDetails">
 					<c:param name="policyHolderNumber" value="${theClaim.policyHolder.policyHolderNumber}"/>
 				</c:url>
 				

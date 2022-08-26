@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <html>
 	<head>
@@ -14,7 +15,14 @@
 	<body>
 		<h1>Claim Number ${claim.claimNumber}</h1>
 		<hr>
-		Status: ${claim.status}<br>
+		<h3>Status: ${claim.status}</h3>
+		
+		<c:if test="${claim.adjuster != null}">
+		
+			<h3>Adjuster: ${claim.adjuster.firstName} ${claim.adjuster.lastName}</h3>
+			
+		</c:if>
+		
 		Loss Type: ${claim.lossType}<br>
 		Incident Date: ${claim.incidentDate}<br>
 		Date reported: ${claim.filingDate}<br>
@@ -64,10 +72,9 @@
 					</tr>
 				</c:forEach>				
 			</table>
-			
-			
-			
-			<a href="${finaliseClaim}">Add a payment</a>			
+			<security:authorize access="hasRole('ADJUSTER')">
+				<a href="${finaliseClaim}">Add a payment</a>	
+			</security:authorize>		
 		</c:if>
 		
 		<c:if test = "${claim.status == 'Declined'}">
@@ -78,13 +85,15 @@
 		</c:if>
 		
 		<c:if test = "${claim.status == 'In Progress'}">
-		
-			<c:url var="declineClaim" value="/declineClaim">
-				<c:param name="claimNumber" value="${claim.claimNumber}"/>
-			</c:url>
-					
-			<h2>Decision</h2>
-			<a href="${finaliseClaim}">Finalise Claim</a> | <a href="${declineClaim}">Decline Claim</a>			
+			
+			<security:authorize access="hasRole('ADJUSTER')">
+				<c:url var="declineClaim" value="/declineClaim">
+					<c:param name="claimNumber" value="${claim.claimNumber}"/>
+				</c:url>
+						
+				<h2>Decision</h2>
+				<a href="${finaliseClaim}">Finalise Claim</a> | <a href="${declineClaim}">Decline Claim</a>			
+			</security:authorize>
 		</c:if>
 		
 </html>

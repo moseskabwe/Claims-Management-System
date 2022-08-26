@@ -45,7 +45,7 @@ public class Claim {
 	
 	@ManyToOne
 	@JoinColumn(name="adjuster_number")
-	private Adjuster adjuster;
+	private User adjuster;
 	
 	@ManyToOne
 	@JoinColumn(name="policyholder_number")
@@ -54,10 +54,6 @@ public class Claim {
 	@ManyToOne
 	@JoinColumn(name="policy_number")
 	private Policy policy;
-	
-	@ManyToOne
-	@JoinColumn(name="csr_number")
-	private CustomerServiceRep customerServiceRep;
 	
 	@Column(name="loss_type")
 	private String lossType;
@@ -94,12 +90,12 @@ public class Claim {
 		this.claimNumber = claimNumber;
 	}
 	
-	public Adjuster getAdjuster() {
+	public User getAdjuster() {
 		return adjuster;
 	}
 
-	public void setAdjuster(Adjuster adjuster) {
-		this.adjuster = adjuster;
+	public void setAdjuster(User user) {
+		this.adjuster = user;
 	}
 
 	public PolicyHolder getPolicyHolder() {
@@ -116,14 +112,6 @@ public class Claim {
 
 	public void setPolicy(Policy policy) {
 		this.policy = policy;
-	}
-
-	public CustomerServiceRep getCustomerServiceRep() {
-		return customerServiceRep;
-	}
-
-	public void setCustomerServiceRep(CustomerServiceRep customerServiceRep) {
-		this.customerServiceRep = customerServiceRep;
 	}
 
 	public String getIncidentDate() {
@@ -201,7 +189,7 @@ public class Claim {
 	@Override
 	public String toString() {
 		return "Claim [claimNumber=" + claimNumber + ", adjuster=" + adjuster + ", policyHolder=" + policyHolder
-				+ ", customerServiceRep=" + customerServiceRep + ", lossType=" + lossType + ", incidentDate="
+				+ ", lossType=" + lossType + ", incidentDate="
 				+ incidentDate + ", filingDate=" + filingDate + ", status=" + status + ", notes=" + notes + "]";
 	}
 	

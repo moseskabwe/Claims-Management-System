@@ -22,7 +22,13 @@ public class PolicyHolderController {
 	@Autowired
 	private PolicyHolderService policyHolderService;
 	
-	@RequestMapping("dashboard/searchPolicyholders")
+	@GetMapping("dashboard/searchPolicyholders")
+	public String fileClaim() {
+
+		return "search-policyholders";
+	}
+	
+	@RequestMapping("dashboard/policyholders")
 	public String searchPolicyholders(@RequestParam("searchTerm") String searchTerm,
 										Model theModel) {
 		
@@ -33,7 +39,7 @@ public class PolicyHolderController {
 		return "policyholders-results";
 	}
 	
-	@GetMapping("/searchPolicyholders/showPolicyholderDetails")
+	@GetMapping("/policyholders/showPolicyholderDetails")
 	public String showPolicyholderDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, 
 											Model theModel) {
 		
@@ -52,7 +58,7 @@ public class PolicyHolderController {
 		return "policyholder-details";
 	}
 	
-	@GetMapping("/searchPolicyholders/showPolicyDetails")
+	@GetMapping("/policyholders/showPolicyDetails")
 	public String showPolicyDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, Model theModel) {
 		
 		PolicyHolder policyholder = policyHolderService.getPolicyHolder(policyholderNumber);
@@ -67,7 +73,7 @@ public class PolicyHolderController {
 		return "policies";
 	}
 	
-	@PostMapping("/searchPolicyholders/editPolicyHolderDetails")
+	@PostMapping("/policyholders/editPolicyHolderDetails")
 	public String editPolicyHolderDetails(@ModelAttribute("policyholder") PolicyHolder policyholder) {
 		
 		policyHolderService.savePolicyHolder(policyholder);

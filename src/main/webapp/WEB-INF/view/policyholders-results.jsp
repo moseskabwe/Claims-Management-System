@@ -22,7 +22,7 @@
 			
 			<c:forEach var="policyholder" items="${policyholderList}">	
 			
-				<c:url var="selectPolicyholder" value="/searchPolicyholders/showPolicyholderDetails">
+				<c:url var="selectPolicyholder" value="/policyholders/showPolicyholderDetails">
 					<c:param name="policyHolderNumber" value="${policyholder.policyHolderNumber}"/>
 				</c:url>
 

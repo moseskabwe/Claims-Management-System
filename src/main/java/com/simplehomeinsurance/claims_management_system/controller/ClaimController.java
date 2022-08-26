@@ -1,6 +1,9 @@
 package com.simplehomeinsurance.claims_management_system.controller;
 
+import java.security.Principal;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,16 +12,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
 import com.simplehomeinsurance.claims_management_system.entity.ClaimPayment;
 import com.simplehomeinsurance.claims_management_system.entity.DeclinedClaim;
 import com.simplehomeinsurance.claims_management_system.entity.Policy;
 import com.simplehomeinsurance.claims_management_system.entity.PolicyHolder;
+import com.simplehomeinsurance.claims_management_system.entity.User;
 import com.simplehomeinsurance.claims_management_system.service.ClaimService;
 import com.simplehomeinsurance.claims_management_system.service.PolicyHolderService;
 import com.simplehomeinsurance.claims_management_system.service.PolicyService;
+import com.simplehomeinsurance.claims_management_system.service.UserService;
 
 @Controller
 @RequestMapping("dashboard/")
@@ -33,6 +37,9 @@ public class ClaimController {
 	@Autowired
 	private PolicyService policyService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@GetMapping("listClaims")
 	public String showClaims(Model theModel) {
 		
@@ -43,16 +50,41 @@ public class ClaimController {
 		return "claims";
 	}
 	
+	@GetMapping("myClaims")
+	public String showMyClaims(HttpServletRequest request, Model model, Principal principal) {
+		
+		User user = userService.getUserbyUsername(principal.getName());
+		
+		if (request.isUserInRole("ROLE_ADJUSTER")) {
+			
+			List<Claim> myClaims = user.getClaims();
+			
+			model.addAttribute("myClaims", myClaims);
+		}
+		
+		return "my-claims";
+	}
+	
 	@GetMapping("listClaims/showClaimDetails")
 	public String showClaimDetails(@ModelAttribute("claimNumber") String claimNumber,
-									Model theModel) {
+									HttpServletRequest request, Model theModel,
+									Principal principal) {
 		
 		Claim theClaim = claimService.getClaim(claimNumber);
-		
-		if (theClaim.getStatus().equalsIgnoreCase("First Notice")) {
-			theClaim.setStatus("In Progress");
-			claimService.updateClaim(theClaim);
+	
+		if (request.isUserInRole("ROLE_ADJUSTER")) {
+			
+			if (theClaim.getStatus().equalsIgnoreCase("First Notice")) {
+				
+				User user = userService.getUserbyUsername(principal.getName());
+				
+				theClaim.setStatus("In Progress");
+				theClaim.setAdjuster(user);
+				
+				claimService.updateClaim(theClaim);
+			}
 		}
+		
 		
 		DeclinedClaim declinedClaim = theClaim.getDeclinedClaim();
 		
@@ -65,23 +97,6 @@ public class ClaimController {
 		theModel.addAttribute("paymentsList", paymentsList);
 		
 		return "claim-details";
-	}
-	
-//	@GetMapping("/listClaims/editClaim")
-//	public String editClaim(@ModelAttribute("claimNumber") String claimNumber,
-//									Model theModel) {
-//		
-//		Claim theClaim = claimService.getClaim(claimNumber);
-//		
-//		theModel.addAttribute("claim", theClaim);
-//		
-//		return "edit-claim";
-//	}
-	
-	@GetMapping("fileClaim")
-	public String fileClaim() {
-
-		return "search-policyholders";
 	}
 	
 	@GetMapping("addClaimDetails")

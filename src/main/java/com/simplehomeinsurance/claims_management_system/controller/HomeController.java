@@ -1,14 +1,19 @@
 package com.simplehomeinsurance.claims_management_system.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.simplehomeinsurance.claims_management_system.entity.User;
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
+import com.simplehomeinsurance.claims_management_system.service.UserService;
 import com.simplehomeinsurance.claims_management_system.service.ClaimService;
 
 @Controller
@@ -17,10 +22,15 @@ public class HomeController {
 	@Autowired
 	private ClaimService claimService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@GetMapping("dashboard")
-	public String showDashboard(Model model) {
+	public String showDashboard(HttpServletRequest request, Model model, Principal principal) {
 		
 		List<Claim> dashboardClaims = claimService.getDashboardClaimsList();
+		
+		User user = userService.getUserbyUsername(principal.getName());
 		
 		Long numberFire = claimService.getNumberOfFireClaims();
 		Long numberDamage = claimService.getNumberOfDamageClaims();
@@ -39,11 +49,26 @@ public class HomeController {
 		stats.add(numberNewClaims);
 		stats.add(numberInProgress);
 		
+		if (request.isUserInRole("ROLE_ADJUSTER")) {
+			
+			List<Claim> myClaims = user.getClaims();
+			
+			model.addAttribute("role", "Adjuster");
+			model.addAttribute("myClaims", myClaims);
+		}
+		
+		if (request.isUserInRole("ROLE_CSR")) {
+			
+			model.addAttribute("role", "Customer Service Representative");
+		}
+		
 		model.addAttribute("dashboardClaimsList", dashboardClaims);
 		
 		model.addAttribute("stats", stats);
 		
 		model.addAttribute("finalisedAverage", finalisedAverage);
+
+		model.addAttribute("user", user);
 		
 		return "dashboard";
 	}

@@ -32,7 +32,7 @@
 			Filing Date:
 			<form:input type="date" path="filingDate"/>
 			<br>
-			Notes:
+			Additional Details:
 			<form:input type="textarea" path="notes"/> 
 			<br>			
 			<form:hidden path="status" value="First Notice"/> 

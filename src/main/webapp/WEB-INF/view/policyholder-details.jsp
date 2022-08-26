@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 
@@ -20,11 +21,13 @@
 		
 		Address: ${policyholder.address}<br>
 		
-		<c:url var="showPolicyDetails" value="/searchPolicyholders/showPolicyDetails">
-			<c:param name="policyHolderNumber" value="${policyholder.policyHolderNumber}"/>
-		</c:url>
-		
-		<a href="${showPolicyDetails}">File a claim</a>
+		<security:authorize access="hasRole('CSR')">
+			<c:url var="showPolicyDetails" value="/policyholders/showPolicyDetails">
+				<c:param name="policyHolderNumber" value="${policyholder.policyHolderNumber}"/>
+			</c:url>
+			
+			<a href="${showPolicyDetails}">File a claim</a>
+		</security:authorize>
 		
 		<h2>Claims History</h2>
 		
