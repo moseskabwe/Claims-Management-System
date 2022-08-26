@@ -6,6 +6,12 @@
 <html>
 	<head>
 		<title>Claim Form</title>
+		
+		<style>
+			.error {
+				color: red}
+		</style>
+		
 	</head>
 	<body>
 		<h1>Claim Form</h1>
@@ -28,9 +34,11 @@
 			<br>
 			Incident Date:
 			<form:input type="date" path="incidentDate"/>
+			<form:errors path="incidentDate" cssClass="error"></form:errors>
 			<br>
 			Filing Date:
 			<form:input type="date" path="filingDate"/>
+			<form:errors path="filingDate" cssClass="error"></form:errors>
 			<br>
 			Additional Details:
 			<form:input type="textarea" path="notes"/> 

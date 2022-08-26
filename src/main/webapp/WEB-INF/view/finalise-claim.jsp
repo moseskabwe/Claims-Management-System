@@ -5,7 +5,11 @@
 	<head>
 		<title>
 			Finalise Claim
-		</title>		
+		</title>
+		<style>
+			.error {
+				color: red}
+		</style>		
 	</head>
 	<body>
 		<c:if test="${claim.status == 'In Progress'}">
@@ -22,6 +26,7 @@
 			<form:hidden path="paymentNumber"/>
 			Payment Amount:
 			<form:input type="text" path="paymentAmount"/>
+			<form:errors path="paymentAmount" cssClass="error"></form:errors>	
 			Notes:
 			<form:input type="textarea" path="notes"/>
 			<input type="submit" value="Submit"/> 
