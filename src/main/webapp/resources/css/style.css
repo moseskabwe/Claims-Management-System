@@ -67,9 +67,9 @@ body {
   cursor: pointer;
 }
 
-#sidebar .items li:nth-child(1){
-  border-left: 4px solid white;
-}
+/* #sidebar .items li:nth-child(1){ */
+/*   border-left: 4px solid white; */
+/* } */
 
 #sidebar .logout-button {
   margin: 0;
@@ -107,7 +107,7 @@ body {
 
 #main-page .navigation-bar span{
   margin-right: 20px;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 400;
 }
 

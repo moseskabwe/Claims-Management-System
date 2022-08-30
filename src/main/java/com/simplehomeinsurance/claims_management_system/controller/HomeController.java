@@ -53,13 +53,7 @@ public class HomeController {
 			
 			List<Claim> myClaims = claimService.getMyOutstandingClaims(user.getUserId());
 			
-			model.addAttribute("role", "Adjuster");
 			model.addAttribute("myClaims", myClaims);
-		}
-		
-		if (request.isUserInRole("ROLE_CSR")) {
-			
-			model.addAttribute("role", "Customer Service Representative");
 		}
 		
 		model.addAttribute("dashboardClaimsList", dashboardClaims);

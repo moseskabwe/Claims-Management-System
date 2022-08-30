@@ -53,16 +53,6 @@ public class ClaimController {
 		
 		model.addAttribute("user", user);
 		
-		if (request.isUserInRole("ROLE_ADJUSTER")) {
-			
-			model.addAttribute("role", "Adjuster");
-		}
-		
-		if (request.isUserInRole("ROLE_CSR")) {
-			
-			model.addAttribute("role", "Customer Service Representative");
-		}
-		
 		return "claims";
 	}
 	

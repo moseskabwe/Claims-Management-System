@@ -36,7 +36,7 @@
            <li><span class="material-symbols-outlined">location_away</span>
              <a href="${pageContext.request.contextPath}/dashboard/searchPolicyholders">Search Policyholders</a></li>
              
-           <li><span class="material-symbols-outlined">home_work</span>
+           <li style="border-left: 4px solid white;"><span class="material-symbols-outlined">home_work</span>
              <a href="${pageContext.request.contextPath}/dashboard/listClaims">All Claims</a></li>
              
            <li><span class="material-symbols-outlined">attach_money</span>
@@ -56,59 +56,21 @@
 	         <div class="profile">
 	              <span class="material-symbols-outlined">account_circle</span>
 	              <div class="user-details">
-	                <h5>${user.firstName} ${user.lastName}</h5>
-	                <p class="role">${role}</p>
+	                <h4>${user.firstName} ${user.lastName}</h4>
+	                <p class="role">
+						<security:authorize access="hasRole('ADJUSTER')">
+							Adjuster
+						</security:authorize>
+						<security:authorize access="hasRole('CSR')">
+							Customer Service Representative
+						</security:authorize>
+					</p>
 	              </div>
 	         </div>
 	       </div>
-		
-			<div class="stats">
-		        <div class="stats-box">
-		          <div>
-		            <span>New Claims</span>
-		            <h3>${stats[3]}</h3>
-		          </div>
-		          <span class="material-symbols-outlined">note_add</span>
-		        </div>
-		        <div class="stats-box">
-		          <div>
-		            <span>In Progress</span>
-		            <h3>${stats[4]}</h3>
-		          </div>
-		          <span class="material-symbols-outlined">edit_document</span>
-		        </div>
-		        <div class="stats-box">
-		          <div>
-		            <span>Finalised Claims</span>
-		            <h3>${finalisedAverage}%</h3>
-		          </div>
-		          <span class="material-symbols-outlined">task</span>
-		        </div>
-		        <div class="stats-box">
-		          <div>
-		            <span>Fire Claims</span>
-		            <h3>${stats[0]}</h3>
-		          </div>
-		          <span class="material-symbols-outlined">local_fire_department</span>
-		        </div>
-		        <div class="stats-box">
-		          <div>
-		            <span>Damage Claims</span>
-		            <h3>${stats[1]}</h3>
-		          </div>
-		          <span class="material-symbols-outlined">handyman</span>
-		        </div>
-		        <div class="stats-box">
-		          <div>
-		            <span>Theft Claims</span>
-		            <h3>${stats[2]}</h3>
-		          </div>
-		          <span class="material-symbols-outlined">emergency_home</span>
-		        </div>
-		      </div>
 		      
 	    <div class="claims-table-container">
-       		<div class="table-heading">
+       		<div class="table-heading" style="margin-top:70px;">
          			<h3 class="heading">All Claims</h3>
        		</div> 
        		
@@ -134,7 +96,7 @@
 					</c:url>
 					
 					<tr>
-						<td><p><a href="${showClaimDetails}">${claim.claimNumber}</a></p></td>
+						<td><p>${claim.claimNumber}</p></td>
 						<td><p>${claim.policyHolder.policyHolderNumber}</p></td>
 						<td><p>${claim.policy.policyType}</p></td>
 						<td><p>${claim.lossType}</p></td>

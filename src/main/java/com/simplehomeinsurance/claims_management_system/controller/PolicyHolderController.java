@@ -1,5 +1,6 @@
 package com.simplehomeinsurance.claims_management_system.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +15,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
 import com.simplehomeinsurance.claims_management_system.entity.Policy;
 import com.simplehomeinsurance.claims_management_system.entity.PolicyHolder;
+import com.simplehomeinsurance.claims_management_system.entity.User;
 import com.simplehomeinsurance.claims_management_system.service.PolicyHolderService;
+import com.simplehomeinsurance.claims_management_system.service.UserService;
 
 @Controller
 public class PolicyHolderController {
 
 	@Autowired
 	private PolicyHolderService policyHolderService;
+	
+	@Autowired
+	private UserService userService;
 	
 	@GetMapping("dashboard/searchPolicyholders")
 	public String fileClaim() {
@@ -30,11 +36,14 @@ public class PolicyHolderController {
 	
 	@RequestMapping("dashboard/policyholders")
 	public String searchPolicyholders(@RequestParam("searchTerm") String searchTerm,
-										Model theModel) {
+										Model theModel, Principal principal) {
+		
+		User user = userService.getUserbyUsername(principal.getName());
 		
 		List<PolicyHolder> policyHolderList = policyHolderService.searchPolicyHolders(searchTerm);
 		
 		theModel.addAttribute("policyholderList", policyHolderList);
+		theModel.addAttribute("user", user);
 		
 		return "policyholders-results";
 	}

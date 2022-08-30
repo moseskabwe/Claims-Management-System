@@ -18,7 +18,7 @@
          </div>
          <div class="items">
          <ul>
-           <li><span class="material-symbols-outlined">dashboard</span>
+           <li style="border-left: 4px solid white;"><span class="material-symbols-outlined">dashboard</span>
              <a href="dashboard">Dashboard</a></li>
              
            <security:authorize access="hasRole('ADJUSTER')">
@@ -50,8 +50,15 @@
 	         <div class="profile">
 	              <span class="material-symbols-outlined">account_circle</span>
 	              <div class="user-details">
-	                <h5>${user.firstName} ${user.lastName}</h5>
-	                <p class="role">${role}</p>
+	                <h4>${user.firstName} ${user.lastName}</h4>
+	                <p class="role">
+	                	<security:authorize access="hasRole('ADJUSTER')">
+							Adjuster
+						</security:authorize>
+						<security:authorize access="hasRole('CSR')">
+							Customer Service Representative
+						</security:authorize>
+					</p>
 	              </div>
 	         </div>
 	       </div>

@@ -1,5 +1,6 @@
 package com.simplehomeinsurance.claims_management_system.controller;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
 import com.simplehomeinsurance.claims_management_system.entity.ClaimPayment;
+import com.simplehomeinsurance.claims_management_system.entity.User;
 import com.simplehomeinsurance.claims_management_system.service.ClaimPaymentService;
 import com.simplehomeinsurance.claims_management_system.service.ClaimService;
+import com.simplehomeinsurance.claims_management_system.service.UserService;
 import com.simplehomeinsurance.claims_management_system.utils.DateUtils;
 
 @Controller
@@ -30,12 +33,19 @@ public class ClaimPaymentController {
 	@Autowired
 	private ClaimService claimService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@GetMapping("/showPayments")
-	public String showPayments(Model theModel) {
+	public String showPayments(Model theModel,  Principal principal) {
 		
 		List<ClaimPayment> claimPaymentList = claimPaymentService.getClaimPaymentList();
 		
+		User user = userService.getUserbyUsername(principal.getName());
+		
 		theModel.addAttribute("claimPayments", claimPaymentList);
+		
+		theModel.addAttribute("user", user);
 		
 		return "payments";
 		
