@@ -79,18 +79,16 @@ public class ClaimController {
 									Principal principal) {
 		
 		Claim theClaim = claimService.getClaim(claimNumber);
-	
-		if (request.isUserInRole("ROLE_ADJUSTER")) {
+		
+		User user = userService.getUserbyUsername(principal.getName());
+		
+		if (request.isUserInRole("ROLE_ADJUSTER") && theClaim.getStatus().equalsIgnoreCase("First Notice")) {
+				
+			theClaim.setStatus("In Progress");
+			theClaim.setAdjuster(user);
 			
-			if (theClaim.getStatus().equalsIgnoreCase("First Notice")) {
-				
-				User user = userService.getUserbyUsername(principal.getName());
-				
-				theClaim.setStatus("In Progress");
-				theClaim.setAdjuster(user);
-				
-				claimService.updateClaim(theClaim);
-			}
+			claimService.updateClaim(theClaim);
+
 		}
 		
 		
@@ -103,6 +101,8 @@ public class ClaimController {
 		theModel.addAttribute("declinedClaim", declinedClaim);
 		
 		theModel.addAttribute("paymentsList", paymentsList);
+		
+		theModel.addAttribute("user", user);
 		
 		return "claim-details";
 	}

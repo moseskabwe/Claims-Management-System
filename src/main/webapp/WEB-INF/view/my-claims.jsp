@@ -63,7 +63,7 @@
 			<div class="claims-table-container">
        			<div class="table-heading" style="margin-top:70px;">
          		<h3 class="heading">My Claims</h3>
-       		</div> 
+       			</div> 
     		
 			<table>
 				<thead>
