@@ -176,7 +176,7 @@
 					${claim.policyHolder.firstName} ${claim.policyHolder.lastName}
 					<br><br>
 					
-					<h4>Email:</h4>
+					<h4>Email</h4>
 					${claim.policyHolder.email}
 					<br><br>
 					
@@ -209,13 +209,13 @@
 					<br><br>
 					
 					<c:if test = "${claim.policy.inForce == 1}">
-						Policy in force
+						<p style="color: green;">Policy in force</p>
 						<br><br>
 					</c:if>
 					
 					<c:if test = "${claim.policy.inForce == 0}">
-						Policy not in force
-						<br><br>
+						<p style="color: red;">Policy not in force</p>
+						<br>
 						<h4>End Date</h4>
 						${claim.policy.endDate}
 						<br><br>

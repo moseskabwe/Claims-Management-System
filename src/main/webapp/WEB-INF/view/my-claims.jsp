@@ -51,7 +51,7 @@
 	              <span class="material-symbols-outlined">account_circle</span>
 	              <div class="user-details">
 	                <h4>${user.firstName} ${user.lastName}</h4>
-	                <p class="role">${role}                
+	                <p class="role">               
 		                <security:authorize access="hasRole('ADJUSTER')">
 							Adjuster
 						</security:authorize>

@@ -230,16 +230,19 @@ tbody tr:hover {
 
 #main-page .claim-details-container .details, .details-2 {
    background: white;
-   width: 40%;
+   width: 45%;
    padding: 16px 20px;
    border-radius: 5px;
    border: 1px solid;
    border-color: #82a2d1;
    vertical-align: top;
-
 }
 
 .details-2 {
 	display: flex;
 	justify-content: space-between;
+}
+
+.claim-details-container h1, h2, h4 {
+	color: #1C3879;
 }

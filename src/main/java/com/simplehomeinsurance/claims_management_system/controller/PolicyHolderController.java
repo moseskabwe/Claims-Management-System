@@ -50,34 +50,40 @@ public class PolicyHolderController {
 	
 	@GetMapping("/policyholders/showPolicyholderDetails")
 	public String showPolicyholderDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, 
-											Model theModel) {
+											Model theModel,
+											Principal principal) {
 		
 		PolicyHolder policyholder = policyHolderService.getPolicyHolder(policyholderNumber);
 		
-		//List<Policy> policyList = policyholder.getPolicies();
+		User user = userService.getUserbyUsername(principal.getName());
 		
 		List<Claim> claimList = policyholder.getClaims();
 		
 		theModel.addAttribute("policyholder", policyholder);
 		
-		//theModel.addAttribute("policyList", policyList);
-		
 		theModel.addAttribute("claimList", claimList);
+		
+		theModel.addAttribute("user", user);
 		
 		return "policyholder-details";
 	}
 	
 	@GetMapping("/policyholders/showPolicyDetails")
-	public String showPolicyDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, Model theModel) {
+	public String showPolicyDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, 
+									Model theModel,
+									Principal principal) {
 		
 		PolicyHolder policyholder = policyHolderService.getPolicyHolder(policyholderNumber);
 		
 		List<Policy> policyList = policyholder.getPolicies();
 		
+		User user = userService.getUserbyUsername(principal.getName());
 		
 		theModel.addAttribute("policyholder", policyholder);
 		
 		theModel.addAttribute("policyList", policyList);
+		
+		theModel.addAttribute("user", user);
 		
 		return "policies";
 	}
