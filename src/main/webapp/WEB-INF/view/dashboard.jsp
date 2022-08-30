@@ -5,100 +5,190 @@
 <html>
 	<head>
 		<title>Dashboard</title>
+		
+	    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
+   		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+   		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap"/>
+	
 	</head>
 	<body>
-		<h1>Dashboard</h1>
-		<hr>
+		<section id="sidebar">
+         <div class="logo">
+            <img src="${pageContext.request.contextPath}/resources/images/logo-transparent.png" alt=""/>
+         </div>
+         <div class="items">
+         <ul>
+           <li><span class="material-symbols-outlined">dashboard</span>
+             <a href="dashboard">Dashboard</a></li>
+             
+           <security:authorize access="hasRole('ADJUSTER')">
+	           	<li><span class="material-symbols-outlined">summarize</span>
+				<a href=dashboard/myClaims>My claims</a> <br>
+				</li>
+			</security:authorize>
+			
+           <li><span class="material-symbols-outlined">location_away</span>
+             <a href="dashboard/searchPolicyholders">Search Policyholders</a></li>
+             
+           <li><span class="material-symbols-outlined">home_work</span>
+             <a href="dashboard/listClaims">All Claims</a></li>
+             
+           <li><span class="material-symbols-outlined">attach_money</span>
+             <a href=dashboard/showPayments>All Payments</a></li>
+             
+           <li><span class="material-symbols-outlined">logout</span>             
+             	<form:form action="${pageContext.request.contextPath}/logout" method="POST">
+					<input type="submit" value="Logout" class="logout-button"/>
+				</form:form>
+             </li>
+             </ul>
+         </div>
+	     </section>
 		
-		<form:form action="${pageContext.request.contextPath}/logout" method="POST">
-			<input type="submit" value="Logout"/>
-		</form:form>
-		Logged in as ${user.firstName}, ${role}. <br>
-		<a href=dashboard>Dashboard</a> <br>
+		 <section id="main-page">
+	       <div class="navigation-bar">
+	         <div class="profile">
+	              <span class="material-symbols-outlined">account_circle</span>
+	              <div class="user-details">
+	                <h5>${user.firstName} ${user.lastName}</h5>
+	                <p class="role">${role}</p>
+	              </div>
+	         </div>
+	       </div>
+		
+			<div class="stats">
+		        <div class="stats-box">
+		          <div>
+		            <span>New Claims</span>
+		            <h3>${stats[3]}</h3>
+		          </div>
+		          <span class="material-symbols-outlined">note_add</span>
+		        </div>
+		        <div class="stats-box">
+		          <div>
+		            <span>In Progress</span>
+		            <h3>${stats[4]}</h3>
+		          </div>
+		          <span class="material-symbols-outlined">edit_document</span>
+		        </div>
+		        <div class="stats-box">
+		          <div>
+		            <span>Finalised Claims</span>
+		            <h3>${finalisedAverage}%</h3>
+		          </div>
+		          <span class="material-symbols-outlined">task</span>
+		        </div>
+		        <div class="stats-box">
+		          <div>
+		            <span>Fire Claims</span>
+		            <h3>${stats[0]}</h3>
+		          </div>
+		          <span class="material-symbols-outlined">local_fire_department</span>
+		        </div>
+		        <div class="stats-box">
+		          <div>
+		            <span>Damage Claims</span>
+		            <h3>${stats[1]}</h3>
+		          </div>
+		          <span class="material-symbols-outlined">handyman</span>
+		        </div>
+		        <div class="stats-box">
+		          <div>
+		            <span>Theft Claims</span>
+		            <h3>${stats[2]}</h3>
+		          </div>
+		          <span class="material-symbols-outlined">emergency_home</span>
+		        </div>
+		      </div>
 		
 		<security:authorize access="hasRole('ADJUSTER')">
-			<a href=dashboard/myClaims>My claims</a> <br>
+			<div class="claims-table-container">
+        		<div class="table-heading">
+          			<h3 class="heading">My Outstanding Claims</h3>
+        		</div>
+		
+			<table style="margin-bottom: 10px;">
+				<thead>
+					<tr>
+						<td>Claim Number</td>
+						<td>Policyholder Number</td>
+						<td>Policy Type</td>
+						<td>Loss Type</td>
+						<td>Incident Date</td>
+						<td>Report Date</td>
+						<td>Adjuster</td>
+						<td>Status</td>
+						<td>Action</td>
+					</tr>
+				</thead>
+				<tbody>			
+					<c:forEach var="myClaim" items="${myClaims}">	
+						
+						<c:url var="showClaimDetails" value="/dashboard/listClaims/showClaimDetails">
+							<c:param name="claimNumber" value="${myClaim.claimNumber}"/>
+						</c:url>
+						
+						<tr>
+							<td><p>${myClaim.claimNumber}</p></td>
+							<td><p>${myClaim.policyHolder.policyHolderNumber}</p></td>
+							<td><p>${myClaim.policy.policyType}</p></td>
+							<td><p>${myClaim.lossType}</p></td>
+							<td><p>${myClaim.incidentDate}</p></td>
+							<td><p>${myClaim.filingDate}</p></td>
+							<td><p>${myClaim.adjuster.firstName} ${myClaim.adjuster.lastName}</p></td>
+							<td><p>${myClaim.status}</p></td>		
+							<td><p><a href="${showClaimDetails}">View</a></p></td>						
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+			</div>
+			
 		</security:authorize>
 		
-		<a href=dashboard/listClaims>Show all claims</a> <br>
-		<a href=dashboard/showPayments>Show all payments</a> <br>
-		<a href=dashboard/searchPolicyholders>Search for a policyholder</a> <br> <br>
-		
-		Number of fire claims: ${stats[0]} <br>
-		Number of damage claims: ${stats[1]} <br>
-		Number of theft claims: ${stats[2]} <br>
-		Number of new claims: ${stats[3]} <br>
-		Number of claims in progress: ${stats[4]} <br>
-		Percentage of finalised claims: ${finalisedAverage}% <br>
-		
-		<security:authorize access="hasRole('ADJUSTER')">
-		<h2>My Outstanding Claims</h2>
+
+		<div class="claims-table-container">
+        	<div class="table-heading">
+          		<h3 class="heading">Outstanding Claims</h3>
+        	</div>
 		
 			<table>
-				<tr>
-					<th>Claim Number</th>
-					<th>Policyholder Number</th>
-					<th>Policy Type</th>
-					<th>Loss Type</th>
-					<th>Incident Date</th>
-					<th>Report Date</th>
-					<th>Adjuster</th>
-					<th>Status</th>
-				</tr>
-				
-				<c:forEach var="myClaim" items="${myClaims}">	
-					
-					<c:url var="showClaimDetails" value="/dashboard/listClaims/showClaimDetails">
-						<c:param name="claimNumber" value="${myClaim.claimNumber}"/>
-					</c:url>
-					
+				<thead>
 					<tr>
-						<td><a href="${showClaimDetails}">${myClaim.claimNumber}</a></td>
-						<td>${myClaim.policyHolder.policyHolderNumber}</td>
-						<td>${myClaim.policy.policyType}</td>
-						<td>${myClaim.lossType}</td>
-						<td>${myClaim.incidentDate}</td>
-						<td>${myClaim.filingDate}</td>
-						<td>${myClaim.adjuster.firstName} ${myClaim.adjuster.lastName}</td>
-						<td>${myClaim.status}</td>								
+						<td>Claim Number</td>
+						<td>Policyholder Number</td>
+						<td>Policy Type</td>
+						<td>Loss Type</td>
+						<td>Incident Date</td>
+						<td>Report Date</td>
+						<td>Adjuster</td>
+						<td>Status</td>
+						<td>Action</td>
 					</tr>
-				</c:forEach>
+				</thead>
+				<tbody>
+					<c:forEach var="claim" items="${dashboardClaimsList}">	
+						
+						<c:url var="showClaimDetails" value="/dashboard/listClaims/showClaimDetails">
+							<c:param name="claimNumber" value="${claim.claimNumber}"/>
+						</c:url>
+						
+						<tr>
+							<td><p><a href="${showClaimDetails}">${claim.claimNumber}</a></p></td>
+							<td><p>${claim.policyHolder.policyHolderNumber}</p></td>
+							<td><p>${claim.policy.policyType}</p></td>
+							<td><p>${claim.lossType}</p></td>
+							<td><p>${claim.incidentDate}</p></td>
+							<td><p>${claim.filingDate}</p></td>
+							<td><p>${claim.adjuster.firstName} ${claim.adjuster.lastName}</p></td>
+							<td><p>${claim.status}</p></td>		
+							<td><p><a href="${showClaimDetails}">View</a></p></td>								
+						</tr>
+					</c:forEach>
+				</tbody>
 			</table>
-		</security:authorize>
-		
-		<h2>Outstanding Claims</h2>
-		
-		<table>
-			<tr>
-				<th>Claim Number</th>
-				<th>Policyholder Number</th>
-				<th>Policy Type</th>
-				<th>Loss Type</th>
-				<th>Incident Date</th>
-				<th>Report Date</th>
-				<th>Adjuster</th>
-				<th>Status</th>
-			</tr>
-			
-			<c:forEach var="claim" items="${dashboardClaimsList}">	
-				
-				<c:url var="showClaimDetails" value="/dashboard/listClaims/showClaimDetails">
-					<c:param name="claimNumber" value="${claim.claimNumber}"/>
-				</c:url>
-				
-				<tr>
-					<td><a href="${showClaimDetails}">${claim.claimNumber}</a></td>
-					<td>${claim.policyHolder.policyHolderNumber}</td>
-					<td>${claim.policy.policyType}</td>
-					<td>${claim.lossType}</td>
-					<td>${claim.incidentDate}</td>
-					<td>${claim.filingDate}</td>
-					<td>${claim.adjuster.firstName} ${claim.adjuster.lastName}</td>
-					<td>${claim.status}</td>								
-				</tr>
-			</c:forEach>
-		</table>
-		
+		</div>
+		</section>
 	</body>
 </html>
 	

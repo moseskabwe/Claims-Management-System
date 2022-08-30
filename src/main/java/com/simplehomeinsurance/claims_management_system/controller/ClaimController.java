@@ -7,13 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,11 +43,25 @@ public class ClaimController {
 	private UserService userService;
 	
 	@GetMapping("listClaims")
-	public String showClaims(Model theModel) {
+	public String showClaims(HttpServletRequest request, Model model, Principal principal) {
 		
 		List<Claim> theClaims = claimService.getClaimsList();
 		
-		theModel.addAttribute("claimsList", theClaims);
+		User user = userService.getUserbyUsername(principal.getName());
+		
+		model.addAttribute("claimsList", theClaims);
+		
+		model.addAttribute("user", user);
+		
+		if (request.isUserInRole("ROLE_ADJUSTER")) {
+			
+			model.addAttribute("role", "Adjuster");
+		}
+		
+		if (request.isUserInRole("ROLE_CSR")) {
+			
+			model.addAttribute("role", "Customer Service Representative");
+		}
 		
 		return "claims";
 	}
