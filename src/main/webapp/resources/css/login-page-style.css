@@ -38,14 +38,14 @@ body{
 
 form .text-field{
   position: relative;
-  border-bottom: 2px solid #adadad;
+  border-bottom: 2px solid rgb(170, 171, 176);
   margin: 30px 0;
 }
 
 .text-field input{
   width: 100%;
   padding: 0 5px;
-  height: 40px;
+  height: 45px;
   font-size: 16px;
   border: none;
   background: none;

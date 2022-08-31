@@ -13,8 +13,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
 
 import com.simplehomeinsurance.claims_management_system.utils.DateUtils;
 
@@ -31,7 +31,8 @@ public class ClaimPayment {
 	@JoinColumn(name="claim_number")
 	private Claim claim;
 	
-	@Min(value=1, message="Must be larger than 0")
+	@DecimalMin(value = "1", message="Must be larger than 0")
+	@Digits(integer=7, fraction=2, message="Invalid amount")
 	@Column(name="payment_amount")
 	private double paymentAmount;
 	
