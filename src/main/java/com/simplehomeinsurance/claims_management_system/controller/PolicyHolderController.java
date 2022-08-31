@@ -28,38 +28,33 @@ public class PolicyHolderController {
 	@Autowired
 	private UserService userService;
 	
+	@ModelAttribute("user")
+	public User findUser(Principal principal) {
+		return this.userService.getUserbyUsername(principal.getName());
+	}
+	
 	@GetMapping("dashboard/searchPolicyholders")
-	public String fileClaim(Principal principal, Model model) {
-		
-		User user = userService.getUserbyUsername(principal.getName());
-		
-		model.addAttribute("user", user);
+	public String fileClaim(Model model) {
 		
 		return "search-policyholders";
 	}
 	
 	@RequestMapping("dashboard/policyholders")
 	public String searchPolicyholders(@RequestParam("searchTerm") String searchTerm,
-										Model theModel, Principal principal) {
-		
-		User user = userService.getUserbyUsername(principal.getName());
+										Model theModel) {
 		
 		List<PolicyHolder> policyHolderList = policyHolderService.searchPolicyHolders(searchTerm);
 		
 		theModel.addAttribute("policyholderList", policyHolderList);
-		theModel.addAttribute("user", user);
 		
 		return "policyholders-results";
 	}
 	
 	@GetMapping("/policyholders/showPolicyholderDetails")
 	public String showPolicyholderDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, 
-											Model theModel,
-											Principal principal) {
+											Model theModel) {
 		
 		PolicyHolder policyholder = policyHolderService.getPolicyHolder(policyholderNumber);
-		
-		User user = userService.getUserbyUsername(principal.getName());
 		
 		List<Claim> claimList = policyholder.getClaims();
 		
@@ -67,27 +62,20 @@ public class PolicyHolderController {
 		
 		theModel.addAttribute("claimList", claimList);
 		
-		theModel.addAttribute("user", user);
-		
 		return "policyholder-details";
 	}
 	
 	@GetMapping("/policyholders/showPolicyDetails")
 	public String showPolicyDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber, 
-									Model theModel,
-									Principal principal) {
+									Model theModel) {
 		
 		PolicyHolder policyholder = policyHolderService.getPolicyHolder(policyholderNumber);
 		
 		List<Policy> policyList = policyholder.getPolicies();
 		
-		User user = userService.getUserbyUsername(principal.getName());
-		
 		theModel.addAttribute("policyholder", policyholder);
 		
 		theModel.addAttribute("policyList", policyList);
-		
-		theModel.addAttribute("user", user);
 		
 		return "policies";
 	}

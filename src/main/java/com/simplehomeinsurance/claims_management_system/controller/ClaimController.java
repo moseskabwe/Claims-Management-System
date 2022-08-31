@@ -42,32 +42,31 @@ public class ClaimController {
 	@Autowired
 	private UserService userService;
 	
+	@ModelAttribute("user")
+	public User findUser(Principal principal) {
+		return this.userService.getUserbyUsername(principal.getName());
+	}
+	
 	@GetMapping("listClaims")
 	public String showClaims(HttpServletRequest request, Model model, Principal principal) {
 		
 		List<Claim> theClaims = claimService.getClaimsList();
 		
-		User user = userService.getUserbyUsername(principal.getName());
-		
 		model.addAttribute("claimsList", theClaims);
-		
-		model.addAttribute("user", user);
 		
 		return "claims";
 	}
 	
 	@GetMapping("myClaims")
-	public String showMyClaims(HttpServletRequest request, Model model, Principal principal) {
+	public String showMyClaims(HttpServletRequest request, Model model, User user) {
 		
-		User user = userService.getUserbyUsername(principal.getName());
 		
 		if (request.isUserInRole("ROLE_ADJUSTER")) {
 			
 			List<Claim> myClaims = claimService.getMyClaims(user.getUserId());
 			
 			model.addAttribute("myClaims", myClaims);
-			
-			model.addAttribute("user", user);
+
 		}
 		
 		return "my-claims";
@@ -75,12 +74,11 @@ public class ClaimController {
 	
 	@GetMapping("listClaims/showClaimDetails")
 	public String showClaimDetails(@ModelAttribute("claimNumber") String claimNumber,
-									HttpServletRequest request, Model theModel,
-									Principal principal) {
+									HttpServletRequest request, Model theModel, User user) {
 		
 		Claim theClaim = claimService.getClaim(claimNumber);
 		
-		User user = userService.getUserbyUsername(principal.getName());
+
 		
 		if (request.isUserInRole("ROLE_ADJUSTER") && theClaim.getStatus().equalsIgnoreCase("First Notice")) {
 				
@@ -102,8 +100,6 @@ public class ClaimController {
 		
 		theModel.addAttribute("paymentsList", paymentsList);
 		
-		theModel.addAttribute("user", user);
-		
 		return "claim-details";
 	}
 	
@@ -112,12 +108,9 @@ public class ClaimController {
 									String policyholderNumber,
 									@ModelAttribute("policyNumber")
 									String policyNumber,
-									Model theModel,
-									Principal principal) {
+									Model theModel) {
 		
 		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);
-		
-		User user = userService.getUserbyUsername(principal.getName());
 		
 		Policy policy = policyService.getPolicy(policyNumber);
 		
@@ -125,13 +118,11 @@ public class ClaimController {
 		
 		policyHolder.addClaim(claim);
 		
-		theModel.addAttribute("policyHolder", policyHolder);
+		theModel.addAttribute("policyHolder", policyHolder)
 		
-		theModel.addAttribute("policy", policy);
+		.addAttribute("policy", policy)
 
-		theModel.addAttribute("claim", claim);
-		
-		theModel.addAttribute("user", user);
+		.addAttribute("claim", claim);
 		
 		return "file-claim-form";
 	}
@@ -141,18 +132,13 @@ public class ClaimController {
 							@ModelAttribute("policyNumber") String policyNumber,
 							@Valid @ModelAttribute("claim") Claim claim,
 							BindingResult bindingResult,
-							Model theModel,
-							Principal principal) {
-		
-		User user = userService.getUserbyUsername(principal.getName());
+							Model theModel) {
 		
 		if (bindingResult.hasErrors()) {
 			
 			PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);
 			
 			Policy policy = policyService.getPolicy(policyNumber);
-			
-			//Claim newClaim = new Claim();
 			
 			policyHolder.addClaim(claim);
 			
@@ -161,8 +147,6 @@ public class ClaimController {
 			theModel.addAttribute("policy", policy);
 
 			theModel.addAttribute("claim", claim);
-			
-			theModel.addAttribute("user", user);
 			
 			return "file-claim-form";
 		

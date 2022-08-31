@@ -36,6 +36,11 @@ public class DeclinedClaimController {
 	@Autowired
 	private UserService userService;
 	
+	@ModelAttribute("user")
+	public User findUser(Principal principal) {
+		return this.userService.getUserbyUsername(principal.getName());
+	}
+	
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
 		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
@@ -44,17 +49,14 @@ public class DeclinedClaimController {
 	
 	@GetMapping("/declineClaim")
 	public String declineClaim(@ModelAttribute("claimNumber") String claimNumber, 
-								Model model,  Principal principal) {
+								Model model) {
 		
 		Claim claim = claimService.getClaim(claimNumber);
-		
-		User user = userService.getUserbyUsername(principal.getName());
 		
 		DeclinedClaim declinedClaim = new DeclinedClaim();
 		
 		model.addAttribute("declinedClaim", declinedClaim);
 		model.addAttribute("claim", claim);
-		model.addAttribute("user", user);
 		
 		return "decline-claim";
 	}
@@ -62,17 +64,13 @@ public class DeclinedClaimController {
 	@PostMapping("/declineClaim")
 	public String saveDeclinedClaim(@ModelAttribute("claimNumber") String claimNumber, 
 									@Valid @ModelAttribute("declinedClaim") DeclinedClaim declinedClaim,
-									BindingResult bindingResult, Model model,
-									Principal principal) {
-		
-		User user = userService.getUserbyUsername(principal.getName());
+									BindingResult bindingResult, Model model) {
 		
 		if (bindingResult.hasErrors()) {
 			Claim claim = claimService.getClaim(claimNumber);
 			
 			model.addAttribute("declinedClaim", declinedClaim);
 			model.addAttribute("claim", claim);
-			model.addAttribute("user", user);
 			
 			return "decline-claim";
 		

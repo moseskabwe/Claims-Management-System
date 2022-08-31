@@ -36,16 +36,17 @@ public class ClaimPaymentController {
 	@Autowired
 	private UserService userService;
 	
+	@ModelAttribute("user")
+	public User findUser(Principal principal) {
+		return this.userService.getUserbyUsername(principal.getName());
+	}
+	
 	@GetMapping("/showPayments")
-	public String showPayments(Model theModel,  Principal principal) {
+	public String showPayments(Model theModel) {
 		
 		List<ClaimPayment> claimPaymentList = claimPaymentService.getClaimPaymentList();
 		
-		User user = userService.getUserbyUsername(principal.getName());
-		
 		theModel.addAttribute("claimPayments", claimPaymentList);
-		
-		theModel.addAttribute("user", user);
 		
 		return "payments";
 		
@@ -53,17 +54,14 @@ public class ClaimPaymentController {
 	
 	@GetMapping("/finaliseClaim")
 	public String finaliseClaim(@ModelAttribute("claimNumber") String claimNumber, 
-								Model model, Principal principal) {
+								Model model) {
 		
 		Claim claim = claimService.getClaim(claimNumber);
 		
 		ClaimPayment payment = new ClaimPayment();
 		
-		User user = userService.getUserbyUsername(principal.getName());
-		
 		model.addAttribute("payment", payment);
 		model.addAttribute("claim", claim);
-		model.addAttribute("user", user);
 		
 		return "finalise-claim";
 	}
@@ -71,10 +69,7 @@ public class ClaimPaymentController {
 	@PostMapping("/finaliseClaim")
 	public String makePayment(@ModelAttribute("claimNumber") String claimNumber, 
 								@Valid @ModelAttribute("payment") ClaimPayment payment,
-								BindingResult bindingResult, Model model,
-								Principal principal) {
-		
-		User user = userService.getUserbyUsername(principal.getName());
+								BindingResult bindingResult, Model model) {
 		
 		if (bindingResult.hasErrors()) {
 			
@@ -82,7 +77,6 @@ public class ClaimPaymentController {
 			
 			model.addAttribute("payment", payment);
 			model.addAttribute("claim", claim);
-			model.addAttribute("user", user);
 			
 			return "finalise-claim";
 			
