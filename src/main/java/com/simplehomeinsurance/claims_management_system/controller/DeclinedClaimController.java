@@ -1,5 +1,6 @@
 package com.simplehomeinsurance.claims_management_system.controller;
 
+import java.security.Principal;
 import java.util.Date;
 
 import javax.validation.Valid;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
 import com.simplehomeinsurance.claims_management_system.entity.DeclinedClaim;
+import com.simplehomeinsurance.claims_management_system.entity.User;
 import com.simplehomeinsurance.claims_management_system.service.ClaimService;
 import com.simplehomeinsurance.claims_management_system.service.DeclinedClaimService;
+import com.simplehomeinsurance.claims_management_system.service.UserService;
 import com.simplehomeinsurance.claims_management_system.utils.DateUtils;
 
 @Controller
@@ -30,6 +33,9 @@ public class DeclinedClaimController {
 	@Autowired
 	private ClaimService claimService;
 	
+	@Autowired
+	private UserService userService;
+	
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
 		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
@@ -38,14 +44,17 @@ public class DeclinedClaimController {
 	
 	@GetMapping("/declineClaim")
 	public String declineClaim(@ModelAttribute("claimNumber") String claimNumber, 
-								Model model) {
+								Model model,  Principal principal) {
 		
 		Claim claim = claimService.getClaim(claimNumber);
+		
+		User user = userService.getUserbyUsername(principal.getName());
 		
 		DeclinedClaim declinedClaim = new DeclinedClaim();
 		
 		model.addAttribute("declinedClaim", declinedClaim);
 		model.addAttribute("claim", claim);
+		model.addAttribute("user", user);
 		
 		return "decline-claim";
 	}
@@ -53,13 +62,17 @@ public class DeclinedClaimController {
 	@PostMapping("/declineClaim")
 	public String saveDeclinedClaim(@ModelAttribute("claimNumber") String claimNumber, 
 									@Valid @ModelAttribute("declinedClaim") DeclinedClaim declinedClaim,
-									BindingResult bindingResult, Model model) {
+									BindingResult bindingResult, Model model,
+									Principal principal) {
+		
+		User user = userService.getUserbyUsername(principal.getName());
 		
 		if (bindingResult.hasErrors()) {
 			Claim claim = claimService.getClaim(claimNumber);
 			
 			model.addAttribute("declinedClaim", declinedClaim);
 			model.addAttribute("claim", claim);
+			model.addAttribute("user", user);
 			
 			return "decline-claim";
 		

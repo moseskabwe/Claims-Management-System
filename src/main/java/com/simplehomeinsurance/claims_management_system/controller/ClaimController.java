@@ -112,9 +112,12 @@ public class ClaimController {
 									String policyholderNumber,
 									@ModelAttribute("policyNumber")
 									String policyNumber,
-									Model theModel) {
+									Model theModel,
+									Principal principal) {
 		
 		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);
+		
+		User user = userService.getUserbyUsername(principal.getName());
 		
 		Policy policy = policyService.getPolicy(policyNumber);
 		
@@ -128,6 +131,8 @@ public class ClaimController {
 
 		theModel.addAttribute("claim", claim);
 		
+		theModel.addAttribute("user", user);
+		
 		return "file-claim-form";
 	}
 	
@@ -136,7 +141,10 @@ public class ClaimController {
 							@ModelAttribute("policyNumber") String policyNumber,
 							@Valid @ModelAttribute("claim") Claim claim,
 							BindingResult bindingResult,
-							Model theModel) {
+							Model theModel,
+							Principal principal) {
+		
+		User user = userService.getUserbyUsername(principal.getName());
 		
 		if (bindingResult.hasErrors()) {
 			
@@ -153,6 +161,8 @@ public class ClaimController {
 			theModel.addAttribute("policy", policy);
 
 			theModel.addAttribute("claim", claim);
+			
+			theModel.addAttribute("user", user);
 			
 			return "file-claim-form";
 		

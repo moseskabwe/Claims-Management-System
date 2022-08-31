@@ -29,8 +29,12 @@ public class PolicyHolderController {
 	private UserService userService;
 	
 	@GetMapping("dashboard/searchPolicyholders")
-	public String fileClaim() {
-
+	public String fileClaim(Principal principal, Model model) {
+		
+		User user = userService.getUserbyUsername(principal.getName());
+		
+		model.addAttribute("user", user);
+		
 		return "search-policyholders";
 	}
 	

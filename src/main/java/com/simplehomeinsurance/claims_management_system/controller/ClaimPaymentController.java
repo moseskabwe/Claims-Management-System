@@ -51,27 +51,19 @@ public class ClaimPaymentController {
 		
 	}
 	
-//	@GetMapping("/showPayments/showPaymentDetail")
-//	public String showPaymentDetail(@ModelAttribute("paymentNumber") int paymentNumber, Model theModel) {
-//		
-//		ClaimPayment claimPayment = claimPaymentService.getClaimPayment(paymentNumber);
-//		
-//		theModel.addAttribute("claimPayment", claimPayment);
-//		
-//		return "";
-//		
-//	}
-	
 	@GetMapping("/finaliseClaim")
 	public String finaliseClaim(@ModelAttribute("claimNumber") String claimNumber, 
-								Model model) {
+								Model model, Principal principal) {
 		
 		Claim claim = claimService.getClaim(claimNumber);
 		
 		ClaimPayment payment = new ClaimPayment();
 		
+		User user = userService.getUserbyUsername(principal.getName());
+		
 		model.addAttribute("payment", payment);
 		model.addAttribute("claim", claim);
+		model.addAttribute("user", user);
 		
 		return "finalise-claim";
 	}
@@ -79,7 +71,10 @@ public class ClaimPaymentController {
 	@PostMapping("/finaliseClaim")
 	public String makePayment(@ModelAttribute("claimNumber") String claimNumber, 
 								@Valid @ModelAttribute("payment") ClaimPayment payment,
-								BindingResult bindingResult, Model model) {
+								BindingResult bindingResult, Model model,
+								Principal principal) {
+		
+		User user = userService.getUserbyUsername(principal.getName());
 		
 		if (bindingResult.hasErrors()) {
 			
@@ -87,6 +82,7 @@ public class ClaimPaymentController {
 			
 			model.addAttribute("payment", payment);
 			model.addAttribute("claim", claim);
+			model.addAttribute("user", user);
 			
 			return "finalise-claim";
 			
