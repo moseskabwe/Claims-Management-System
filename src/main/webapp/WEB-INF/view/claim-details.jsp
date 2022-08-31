@@ -6,7 +6,7 @@
 	<head>
 		<title>Claim Details</title>	
 					
-	    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css">
+	    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css"/>
    		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
    		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap"/>
 		
@@ -71,32 +71,36 @@
 	        <div class="claim-details-container">
 	          <div class="details">
 	          
-	            <h1>Claim Number ${claim.claimNumber}</h1>
+	            <h2>Claim Number ${claim.claimNumber}</h2>
 	            <br>
-				<h4>Status</h4>
-				${claim.status}
-				<br><br>
-				<c:if test="${claim.adjuster != null}">
 				
-					<h4>Adjuster</h4> 
-					${claim.adjuster.firstName} ${claim.adjuster.lastName}
-					<br><br>
-				</c:if>
+				<table class="details-table">
+					<tr>
+						<td><h4>Status</h4>
+						${claim.status}</td>
+						<td><c:if test="${claim.adjuster != null}">
 				
-				<h4>Loss Type</h4> 
-				${claim.lossType}
-				<br><br>
-				<h4>Incident Date</h4> 
-				${claim.incidentDate}
-				<br><br>
-				<h4>Date reported</h4>
-				${claim.filingDate}
-				<br><br>
-				<c:if test = "${claim.notes != null}">
-					<h4>Additional Details</h4> 
-					${claim.notes}
-					<br><br>
-				</c:if>
+							<h4>Adjuster</h4> 
+							${claim.adjuster.firstName} ${claim.adjuster.lastName}
+					
+						</c:if></td>
+					</tr>
+					<tr>
+						<td><h4>Loss Type</h4> 
+						${claim.lossType}</td>
+						<td><h4>Date reported</h4>
+						${claim.filingDate}</td>
+					</tr>
+					<tr>
+						<td><h4>Incident Date</h4> 
+						${claim.incidentDate}</td>
+						<td><c:if test = "${claim.notes != null}">
+							<h4>Additional Details</h4> 
+							${claim.notes}
+							<br><br>
+						</c:if></td>
+					</tr>
+				</table>
 				
 				<c:if test = "${claim.status == 'Finalised'}">
 					<h2>Decision</h2>
@@ -168,59 +172,65 @@
 	          <div>
 		          	<h2>Policyholder Details</h2>
 		          	<br>
-					<h4>Policyholder Number</h4> 
-					${claim.policyHolder.policyHolderNumber}
-					<br><br>
-					
-					<h4>Name</h4> 
-					${claim.policyHolder.firstName} ${claim.policyHolder.lastName}
-					<br><br>
-					
-					<h4>Email</h4>
-					${claim.policyHolder.email}
-					<br><br>
-					
-					<h4>Phone</h4>
-					${claim.policyHolder.phoneNumber}
-					<br><br>
-					
-					<h4>Address</h4>
-					${claim.policyHolder.address}
-					<br><br>
+
+					<table class="details-table">
+						<tr>
+							<td><h4>Policyholder Number</h4> 
+							${claim.policyHolder.policyHolderNumber}</td>
+						</tr>
+						<tr>
+							<td><h4>Name</h4>
+							${claim.policyHolder.firstName} ${claim.policyHolder.lastName}</td>
+							<td><h4>Phone</h4>
+							${claim.policyHolder.phoneNumber}</td>
+						</tr>
+						<tr>
+							<td><h4>Email</h4>
+							${claim.policyHolder.email}</td>
+							<td><h4>Address</h4>
+							${claim.policyHolder.address}</td>
+						</tr>
+
+					</table>
+
+
 				</div>
 				
 				<div>
 					<h2>Policy Details</h2>
 					<br>
-					<h4>Policy Number</h4>
-					${claim.policy.policyNumber}
-					<br><br>
 					
-					<h4>PolicyType</h4>
-					${claim.policy.policyType}
-					<br><br>
-					
-					<h4>Property Address</h4>
-					${claim.policy.property.propertyAddress}
-					<br><br>
-					
-					<h4>Inception Date</h4> 
-					${claim.policy.inceptionDate}
-					<br><br>
-					
-					<c:if test = "${claim.policy.inForce == 1}">
-						<p style="color: green;">Policy in force</p>
-						<br><br>
-					</c:if>
-					
-					<c:if test = "${claim.policy.inForce == 0}">
-						<p style="color: red;">Policy not in force</p>
-						<br>
-						<h4>End Date</h4>
-						${claim.policy.endDate}
-						<br><br>
-						
-					</c:if>
+					<table class="details-table">
+						<tr>
+							<td><h4>Policy Number</h4>
+							${claim.policy.policyNumber}</td>
+							
+							<td><h4>Inception Date</h4> 
+							${claim.policy.inceptionDate}</td>
+						</tr>
+						<tr>
+							<td><h4>PolicyType</h4>
+							${claim.policy.policyType}</td>
+							
+							<td>
+								<c:if test = "${claim.policy.inForce == 1}">
+									<p style="color: green;">Policy in force</p>
+									
+								</c:if>
+								
+								<c:if test = "${claim.policy.inForce == 0}">
+									<p style="color: red;">Policy not in force</p>
+									<br>
+									<h4>End Date</h4>
+									${claim.policy.endDate}
+								</c:if>
+							</td>
+						</tr>	
+						<tr>
+							<td><h4>Property Address</h4>
+							${claim.policy.property.propertyAddress}</td>
+						</tr>				
+					</table>
 				</div>
 	          </div>
 	        </div>
