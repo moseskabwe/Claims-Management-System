@@ -25,81 +25,54 @@ import com.simplehomeinsurance.claims_management_system.utils.DateUtils;
 
 @Controller
 @RequestMapping("dashboard")
-public class ClaimPaymentController {
-	
+public class ClaimPaymentController {	
 	@Autowired
-	private ClaimPaymentService claimPaymentService;
-	
+	private ClaimPaymentService claimPaymentService;	
 	@Autowired
-	private ClaimService claimService;
-	
+	private ClaimService claimService;	
 	@Autowired
 	private UserService userService;
-	
+
 	@ModelAttribute("user")
 	public User findUser(Principal principal) {
 		return this.userService.getUserbyUsername(principal.getName());
 	}
 	
 	@GetMapping("/showPayments")
-	public String showPayments(Model theModel) {
-		
-		List<ClaimPayment> claimPaymentList = claimPaymentService.getClaimPaymentList();
-		
-		theModel.addAttribute("claimPayments", claimPaymentList);
-		
-		return "payments";
-		
+	public String showPayments(Model theModel) {	
+		List<ClaimPayment> claimPaymentList = claimPaymentService.getClaimPaymentList();	
+		theModel.addAttribute("claimPayments", claimPaymentList);	
+		return "payments";	
 	}
-	
+
 	@GetMapping("/finaliseClaim")
 	public String finaliseClaim(@ModelAttribute("claimNumber") String claimNumber, 
-								Model model) {
-		
-		Claim claim = claimService.getClaim(claimNumber);
-		
-		ClaimPayment payment = new ClaimPayment();
-		
-		model.addAttribute("payment", payment);
-		model.addAttribute("claim", claim);
-		
+								Model model) {	
+		Claim claim = claimService.getClaim(claimNumber);	
+		ClaimPayment payment = new ClaimPayment();	
+		model.addAttribute("payment", payment)
+			 .addAttribute("claim", claim);	
 		return "finalise-claim";
 	}
-	
+
 	@PostMapping("/finaliseClaim")
 	public String makePayment(@ModelAttribute("claimNumber") String claimNumber, 
-								@Valid @ModelAttribute("payment") ClaimPayment payment,
-								BindingResult bindingResult, Model model) {
-		
+							  @Valid @ModelAttribute("payment") ClaimPayment payment,
+							  BindingResult bindingResult, Model model) {
+		Claim claim = claimService.getClaim(claimNumber);
 		if (bindingResult.hasErrors()) {
-			
-			Claim claim = claimService.getClaim(claimNumber);
-			
-			model.addAttribute("payment", payment);
-			model.addAttribute("claim", claim);
-			
+			model.addAttribute("payment", payment)
+				 .addAttribute("claim", claim);
 			return "finalise-claim";
-			
 		} else {
-			
-			Claim claim = claimService.getClaim(claimNumber);
-			
 			claim.addPayment(payment);
-			
 			claim.setStatus("Finalised");
-			
 			claimService.updateClaim(claim);
-			
-			Date date = new Date();  
-			
+			Date date = new Date();
 			payment.setClaim(claim);
-			
 			payment.setPaymentDate(DateUtils.formatDate(date));
-			
 			claimPaymentService.saveClaimPayment(payment);
-			
 			return "redirect:/dashboard/listClaims/showClaimDetails";
-			
 		}
 	}
 }

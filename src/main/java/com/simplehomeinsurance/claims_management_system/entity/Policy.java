@@ -95,8 +95,7 @@ public class Policy {
 		if (this.claims == null) {
             this.claims = new HashSet<>();
         }
-		List<Claim> claimsList = new ArrayList<>(this.claims);
-		return claimsList;
+		return new ArrayList<>(this.claims);
 	}
 	
 	public void addClaim(Claim claim) {

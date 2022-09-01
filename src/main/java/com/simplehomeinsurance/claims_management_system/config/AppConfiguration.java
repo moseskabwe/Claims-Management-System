@@ -29,103 +29,70 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @ComponentScan("com.simplehomeinsurance.claims_management_system")
 @PropertySource({"classpath:persistence-mysql.properties"})
 public class AppConfiguration implements WebMvcConfigurer {
-
 	@Autowired
 	private Environment env;
 	
 	@Bean
-	public ViewResolver viewResolver() {
-		
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		
+	public ViewResolver viewResolver() {	
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();	
 		viewResolver.setPrefix("/WEB-INF/view/");
-		viewResolver.setSuffix(".jsp");
-		
+		viewResolver.setSuffix(".jsp");	
 		return viewResolver;
 	}
 	
 	@Bean
 	public DataSource myDataSource() {
-		
-		// create the connection pool
 		ComboPooledDataSource myDataSource = new ComboPooledDataSource();
 
-		// set the jdbc driver
 		try {
-			myDataSource.setDriverClass(env.getProperty("jdbc.driver"));		
-		
+			myDataSource.setDriverClass(env.getProperty("jdbc.driver"));			
 		}catch (PropertyVetoException e) {
 			throw new RuntimeException(e);
 		}
-			
-		// set database connection props
 		myDataSource.setJdbcUrl(env.getProperty("jdbc.url"));
 		myDataSource.setUser(env.getProperty("jdbc.user"));
 		myDataSource.setPassword(env.getProperty("jdbc.password"));
 		
-		// set connection pool props
 		myDataSource.setInitialPoolSize(getIntProperty("connection.pool.initialPoolSize"));
 		myDataSource.setMinPoolSize(getIntProperty("connection.pool.minPoolSize"));
 		myDataSource.setMaxPoolSize(getIntProperty("connection.pool.maxPoolSize"));		
 		myDataSource.setMaxIdleTime(getIntProperty("connection.pool.maxIdleTime"));
-
 		return myDataSource;
 	}
 	
 	private Properties getHibernateProperties() {
-
-		// set the hibernate properties
 		Properties props = new Properties();
-
 		props.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-		props.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-		
+		props.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));	
 		return props;				
 	}
 
-	
-	// helper method to read environment property and convert it to int
-	private int getIntProperty(String propName) {
-		
+	private int getIntProperty(String propName) {		
 		String propVal = env.getProperty(propName);
-		
-		// convert to int
-		int intPropVal = Integer.parseInt(propVal);
-		
+		int intPropVal = Integer.parseInt(propVal);		
 		return intPropVal;
-	}	
+	}
 	
 	@Bean
 	public LocalSessionFactoryBean sessionFactory(){
-		
-		// create session factories
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		
-		// set the properties
 		sessionFactory.setDataSource(myDataSource());
 		sessionFactory.setPackagesToScan(env.getProperty("hibernate.packagesToScan"));
-		sessionFactory.setHibernateProperties(getHibernateProperties());
-		
+		sessionFactory.setHibernateProperties(getHibernateProperties());	
 		return sessionFactory;
 	}
 	
 	@Bean
 	@Autowired
 	public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-		
-		// setup transaction manager based on session factory
 		HibernateTransactionManager txManager = new HibernateTransactionManager();
 		txManager.setSessionFactory(sessionFactory);
-
 		return txManager;
 	}	
 	
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-          .addResourceHandler("/resources/**")
-          .addResourceLocations("/resources/"); 
+        registry.addResourceHandler("/resources/**")
+          		.addResourceLocations("/resources/");
     }	
 }
-
-

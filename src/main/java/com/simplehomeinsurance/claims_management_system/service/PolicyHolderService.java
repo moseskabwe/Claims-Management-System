@@ -11,33 +11,27 @@ import com.simplehomeinsurance.claims_management_system.dao.PolicyHolderDAO;
 import com.simplehomeinsurance.claims_management_system.entity.PolicyHolder;
 
 @Service
-public class PolicyHolderService {
-	
+public class PolicyHolderService {	
 	@Autowired
 	private PolicyHolderDAO policyHolderDAO;
 	
 	@Transactional
-	public List<PolicyHolder> getPolicyHolderList(){
-		
+	public List<PolicyHolder> getPolicyHolderList() {		
 		return policyHolderDAO.getPolicyHolderList();
 	}
 	
 	@Transactional
-	public PolicyHolder getPolicyHolder(String policyHolderNumber){
-		
+	public PolicyHolder getPolicyHolder(String policyHolderNumber) {		
 		return policyHolderDAO.getPolicyHolder(policyHolderNumber);
 	}
 	
 	@Transactional
-	public void savePolicyHolder(PolicyHolder policyHolder) {
-		
+	public void savePolicyHolder(PolicyHolder policyHolder) {	
 		policyHolderDAO.savePolicyHolder(policyHolder);
 	}
 	
 	@Transactional
 	public List<PolicyHolder> searchPolicyHolders(String searchTerm) {
-		
 		return policyHolderDAO.searchPolicyHolders(searchTerm);
 	}
-	
 }

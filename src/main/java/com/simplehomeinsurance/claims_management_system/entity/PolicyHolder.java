@@ -74,16 +74,14 @@ public class PolicyHolder {
 		if (this.policies == null) {
             this.policies = new HashSet<>();
         }
-		List<Policy> policyList = new ArrayList<>(this.policies);
-		return policyList;
+		return new ArrayList<>(this.policies);
 	}
 
 	public List<Claim> getClaims() {
 		if (this.claims == null) {
             this.claims = new HashSet<>();
         }
-		List<Claim> claimsList = new ArrayList<>(this.claims);
-		return claimsList;
+		return new ArrayList<>(this.claims);
 	}
 	
 	public void addClaim(Claim claim) {
@@ -93,12 +91,4 @@ public class PolicyHolder {
 		claims.add(claim);		
 		claim.setPolicyHolder(this);
 	}
-
-	@Override
-	public String toString() {
-		return "PolicyHolder [policyHolderNumber=" + policyHolderNumber + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", email=" + email + ", phoneNumber=" + phoneNumber + ", address=" + address + "]";
-	}
-	
-	
 }

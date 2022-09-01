@@ -11,62 +11,52 @@ import com.simplehomeinsurance.claims_management_system.dao.ClaimDAO;
 import com.simplehomeinsurance.claims_management_system.entity.Claim;
 
 @Service
-public class ClaimService {
-	
+public class ClaimService {	
 	@Autowired	
 	private ClaimDAO claimDAO;
 	
 	@Transactional
-	public List<Claim> getClaimsList() {
-		
+	public List<Claim> getClaimsList() {	
 		return claimDAO.getClaimsList();
 	}
 	
 	@Transactional
-	public List<Claim> getMyClaims(int userId) {
-		
+	public List<Claim> getMyClaims(int userId) {		
 		return claimDAO.getMyClaims(userId);
 	}
 	
 	@Transactional
-	public Claim getClaim(String claimNumber) {
-		
+	public Claim getClaim(String claimNumber) {		
 		return claimDAO.getClaim(claimNumber);
 	}
 	
 	@Transactional
-	public void saveClaim(Claim theClaim) {
-		
+	public void saveClaim(Claim theClaim) {		
 		claimDAO.saveClaim(theClaim);
 	}
 	
 	@Transactional
-	public void updateClaim(Claim theClaim) {
-		
+	public void updateClaim(Claim theClaim) {		
 		claimDAO.updateClaim(theClaim);
 	}
 	
 	@Transactional
-	public List<Claim> searchClaims(String searchTerm) {
-		
+	public List<Claim> searchClaims(String searchTerm) {		
 		return claimDAO.getClaimsList();
 	}
 
 	@Transactional
-	public List<Claim> getDashboardClaimsList() {
-		
+	public List<Claim> getDashboardClaimsList() {		
 		return claimDAO.getDashboardClaimsList();
 	}
 	
 	@Transactional
-	public Long getNumberOfFireClaims() {
-		
+	public Long getNumberOfFireClaims() {		
 		return claimDAO.getNumberOfFireClaims();
 	}
 	
 	@Transactional
-	public Long getNumberOfDamageClaims() {
-		
+	public Long getNumberOfDamageClaims() {		
 		return claimDAO.getNumberOfDamageClaims();
 	}
 	
@@ -77,32 +67,26 @@ public class ClaimService {
 	
 	@Transactional
 	public Long getNumberOfNewClaims() {
-
 		return claimDAO.getNumberOfNewClaims();
 	}
 	
 	@Transactional
 	public Long getNumberOfClaimsInProgress() {
-
 		return claimDAO.getNumberOfClaimsInProgress();
 	}
 	
 	@Transactional
 	public Long getNumberOfFinalisedClaims() {
-
 		return claimDAO.getNumberOfFinalisedClaims();
 	}
 	
 	@Transactional
 	public Long getNumberTotalClaims() {
-
 		return claimDAO.getNumberTotalClaims();
 	}
 	
 	@Transactional
-	public List<Claim> getMyOutstandingClaims(int userId) {
-		
+	public List<Claim> getMyOutstandingClaims(int userId) {		
 		return claimDAO.getMyOutstandingClaims(userId);
 	}
-	
 }

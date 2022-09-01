@@ -25,14 +25,11 @@ import com.simplehomeinsurance.claims_management_system.service.UserService;
 import com.simplehomeinsurance.claims_management_system.utils.DateUtils;
 
 @Controller
-public class DeclinedClaimController {
-	
+public class DeclinedClaimController {	
 	@Autowired
-	private DeclinedClaimService declinedClaimService;
-	
+	private DeclinedClaimService declinedClaimService;	
 	@Autowired
-	private ClaimService claimService;
-	
+	private ClaimService claimService;	
 	@Autowired
 	private UserService userService;
 	
@@ -42,6 +39,8 @@ public class DeclinedClaimController {
 	}
 	
 	@InitBinder
+	// Used to remove leading and ending whitespace from the Reason text field 
+	// to ensure that it's never empty.
 	public void initBinder(WebDataBinder dataBinder) {
 		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
 		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
@@ -49,50 +48,33 @@ public class DeclinedClaimController {
 	
 	@GetMapping("/declineClaim")
 	public String declineClaim(@ModelAttribute("claimNumber") String claimNumber, 
-								Model model) {
-		
-		Claim claim = claimService.getClaim(claimNumber);
-		
+								Model model) {		
+		Claim claim = claimService.getClaim(claimNumber);		
 		DeclinedClaim declinedClaim = new DeclinedClaim();
-		
-		model.addAttribute("declinedClaim", declinedClaim);
-		model.addAttribute("claim", claim);
-		
+		model.addAttribute("declinedClaim", declinedClaim)
+			 .addAttribute("claim", claim);		
 		return "decline-claim";
 	}
-	
+
 	@PostMapping("/declineClaim")
 	public String saveDeclinedClaim(@ModelAttribute("claimNumber") String claimNumber, 
-									@Valid @ModelAttribute("declinedClaim") DeclinedClaim declinedClaim,
+									@Valid @ModelAttribute("declinedClaim") 
+									DeclinedClaim declinedClaim,
 									BindingResult bindingResult, Model model) {
-		
+		Claim claim = claimService.getClaim(claimNumber);
 		if (bindingResult.hasErrors()) {
-			Claim claim = claimService.getClaim(claimNumber);
-			
-			model.addAttribute("declinedClaim", declinedClaim);
-			model.addAttribute("claim", claim);
-			
-			return "decline-claim";
-		
+			model.addAttribute("declinedClaim", declinedClaim)
+				 .addAttribute("claim", claim);			
+			return "decline-claim";	
 		} else {
-			
-			Claim claim = claimService.getClaim(claimNumber);
-			
-			claim.setDeclinedClaim(declinedClaim);
-			
-			claim.setStatus("Declined");
-			
-			claimService.updateClaim(claim);
-			
-			Date date = new Date();  
-			
-			declinedClaim.setClaim(claim);
-			
+			claim.setDeclinedClaim(declinedClaim);		
+			claim.setStatus("Declined");		
+			claimService.updateClaim(claim);			
+			Date date = new Date();  			
+			declinedClaim.setClaim(claim);			
 			declinedClaim.setDeclinedDate(DateUtils.formatDate(date));
-			
 			declinedClaimService.saveDeclinedClaim(declinedClaim);
-			
 			return "redirect:/dashboard/listClaims/showClaimDetails";
-		}	
+		}
 	}
 }

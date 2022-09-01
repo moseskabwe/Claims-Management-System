@@ -12,35 +12,23 @@ import com.simplehomeinsurance.claims_management_system.entity.ClaimPayment;
 
 @Repository
 public class ClaimPaymentDAO {
-
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	public List<ClaimPayment> getClaimPaymentList() {
-
-		Session currentSession = sessionFactory.getCurrentSession();
-		
-		Query<ClaimPayment> theQuery = currentSession.createQuery("from ClaimPayment order by paymentDate desc", ClaimPayment.class);
-				
-		List<ClaimPayment> claimPaymentList = theQuery.getResultList();
-		
-		return claimPaymentList;
+		Session currentSession = sessionFactory.getCurrentSession();	
+		Query<ClaimPayment> theQuery = currentSession
+				.createQuery("from ClaimPayment order by paymentDate desc", ClaimPayment.class);				
+		return theQuery.getResultList();
 	}
 
 	public ClaimPayment getClaimPayment(int paymentNumber) {
-
-		Session currentSession = sessionFactory.getCurrentSession();
-		
-		ClaimPayment claimPayment = currentSession.get(ClaimPayment.class, paymentNumber);
-		
-		return claimPayment;
+		Session currentSession = sessionFactory.getCurrentSession();		
+		return currentSession.get(ClaimPayment.class, paymentNumber);
 	}
 
 	public void saveClaimPayment(ClaimPayment claimPayment) {
-
-		Session currentSession = sessionFactory.getCurrentSession();
-		
+		Session currentSession = sessionFactory.getCurrentSession();		
 		currentSession.saveOrUpdate(claimPayment);
-	}
-		
+	}	
 }

@@ -10,37 +10,25 @@ import org.springframework.stereotype.Repository;
 
 import com.simplehomeinsurance.claims_management_system.entity.DeclinedClaim;
 
-
 @Repository
-public class DeclinedClaimDAO {
-	
+public class DeclinedClaimDAO {	
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	public List<DeclinedClaim> getDeclinedClaimList() {
-
-		Session currentSession = sessionFactory.getCurrentSession();
-		
-		Query<DeclinedClaim> theQuery = currentSession.createQuery("from DeclinedClaim", DeclinedClaim.class);
-				
-		List<DeclinedClaim> declinedClaimList = theQuery.getResultList();
-		
-		return declinedClaimList;
+		Session currentSession = sessionFactory.getCurrentSession();		
+		Query<DeclinedClaim> theQuery = currentSession.createQuery("from DeclinedClaim", 
+																	DeclinedClaim.class);			
+		return theQuery.getResultList();
 	}
 
-	public DeclinedClaim getDeclinedClaim(String declinedClaimNumber) {
-		
-		Session currentSession = sessionFactory.getCurrentSession();
-		
-		DeclinedClaim declinedClaim = currentSession.get(DeclinedClaim.class, declinedClaimNumber);
-		
-		return declinedClaim;
+	public DeclinedClaim getDeclinedClaim(String declinedClaimNumber) {		
+		Session currentSession = sessionFactory.getCurrentSession();		
+		return currentSession.get(DeclinedClaim.class, declinedClaimNumber);
 	}
 
-	public void saveDeclinedClaim(DeclinedClaim declinedClaim) {
-		
-		Session currentSession = sessionFactory.getCurrentSession();
-		
+	public void saveDeclinedClaim(DeclinedClaim declinedClaim) {		
+		Session currentSession = sessionFactory.getCurrentSession();		
 		currentSession.saveOrUpdate(declinedClaim);
 	}
 }

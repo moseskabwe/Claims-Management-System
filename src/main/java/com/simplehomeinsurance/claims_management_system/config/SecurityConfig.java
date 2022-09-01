@@ -11,20 +11,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
+public class SecurityConfig extends WebSecurityConfigurerAdapter {	
 	@Autowired
 	private DataSource myDataSource;
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
 		auth.jdbcAuthentication().dataSource(myDataSource);
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
 		http.authorizeRequests()
 			.antMatchers("/policyholders/showPolicyDetails").hasRole("CSR")
 			.antMatchers("/dashboard/addClaimDetails").hasRole("CSR")
@@ -41,9 +38,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and().logout().permitAll();
 	}
 }
-
-
-
-
-
-

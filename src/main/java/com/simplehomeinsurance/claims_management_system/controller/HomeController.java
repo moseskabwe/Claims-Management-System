@@ -18,20 +18,17 @@ import com.simplehomeinsurance.claims_management_system.service.ClaimService;
 
 @Controller
 public class HomeController {
-	
 	@Autowired
 	private ClaimService claimService;
-	
 	@Autowired
 	private UserService userService;
-	
+
 	@GetMapping("dashboard")
-	public String showDashboard(HttpServletRequest request, Model model, Principal principal) {
-		
-		List<Claim> dashboardClaims = claimService.getDashboardClaimsList();
-		
+	public String showDashboard(HttpServletRequest request, Model model, Principal principal) {	
+		List<Claim> dashboardClaims = claimService.getDashboardClaimsList();	
 		User user = userService.getUserbyUsername(principal.getName());
 		
+		// Get statistics to display on the dashboard.
 		Long numberFire = claimService.getNumberOfFireClaims();
 		Long numberDamage = claimService.getNumberOfDamageClaims();
 		Long numberTheft = claimService.getNumberOfTheftClaims();
@@ -39,32 +36,23 @@ public class HomeController {
 		Long numberInProgress = claimService.getNumberOfClaimsInProgress();
 		Long numberFinalised = claimService.getNumberOfFinalisedClaims();
 		Long numberTotal = claimService.getNumberTotalClaims();
-		int finalisedAverage = (int) (Math.round(((double) numberFinalised / numberTotal)*10000.0)/100.0);
-		
+		int finalisedAverage = (int) (Math.round(((double) numberFinalised
+										/ numberTotal) * 10000.0)/100.0);			
 		ArrayList<Long> stats = new ArrayList<>();
-		
 		stats.add(numberFire);
 		stats.add(numberDamage);
 		stats.add(numberTheft);
 		stats.add(numberNewClaims);
 		stats.add(numberInProgress);
 		
-		if (request.isUserInRole("ROLE_ADJUSTER")) {
-			
-			List<Claim> myClaims = claimService.getMyOutstandingClaims(user.getUserId());
-			
+		if (request.isUserInRole("ROLE_ADJUSTER")) {			
+			List<Claim> myClaims = claimService.getMyOutstandingClaims(user.getUserId());		
 			model.addAttribute("myClaims", myClaims);
 		}
-		
-		model.addAttribute("dashboardClaimsList", dashboardClaims);
-		
-		model.addAttribute("stats", stats);
-		
-		model.addAttribute("finalisedAverage", finalisedAverage);
-
-		model.addAttribute("user", user);
-		
+		model.addAttribute("dashboardClaimsList", dashboardClaims)
+			 .addAttribute("stats", stats)
+			 .addAttribute("finalisedAverage", finalisedAverage)
+			 .addAttribute("user", user);	
 		return "dashboard";
 	}
-	
 }

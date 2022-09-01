@@ -90,5 +90,10 @@ public class ClaimPayment {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "ClaimPayment [paymentNumber=" + paymentNumber + ", claim=" + claim 
+				+ ", paymentAmount=" + paymentAmount + ", paymentDate=" + paymentDate + "]";
+	}
 }

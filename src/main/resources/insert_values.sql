@@ -14,8 +14,7 @@ INSERT INTO `users` VALUES
 (3841,'Harley','Spencer','hspencer@simple.com','111223119','hspencer','{bcrypt}$2a$10$eNE83A.DIzPQ3d8AS33r4.GTa3nHQgH29Y8UxujRq2YmKq9zJqsMq','1'),
 (3660,'Curtis','Coleman','ccoleman@simple.com','111223120','ccoleman','{bcrypt}$2a$10$bdIjr51ZFyGB0JDNlPEMzuDRhRsXrLmm2QDcc8GlLw5B/gNckjb5K','1');
     
-INSERT INTO `authorities` 
-VALUES 
+INSERT INTO `authorities` VALUES 
 ('tgreen','ROLE_ADJUSTER'),
 ('jsanders','ROLE_ADJUSTER'),
 ('ecarter','ROLE_ADJUSTER'),
@@ -1028,7 +1027,6 @@ INSERT INTO `declined_claims` VALUES
 (11093,'CM860625','2022-07-11','Cause of loss not covered'),
 (11094,'CM860968','2022-07-25','Cause of loss not covered'),
 (11095,'CM860919','2022-07-25','Late claim');
-
 
 INSERT INTO `claims_sequence` VALUES 
 (861262);

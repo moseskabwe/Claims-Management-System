@@ -28,17 +28,13 @@ import com.simplehomeinsurance.claims_management_system.service.UserService;
 
 @Controller
 @RequestMapping("dashboard/")
-public class ClaimController {
-	
+public class ClaimController {	
 	@Autowired
-	private ClaimService claimService;
-	
+	private ClaimService claimService;	
 	@Autowired
-	private PolicyHolderService policyHolderService;
-	
+	private PolicyHolderService policyHolderService;	
 	@Autowired
 	private PolicyService policyService;
-	
 	@Autowired
 	private UserService userService;
 	
@@ -48,82 +44,50 @@ public class ClaimController {
 	}
 	
 	@GetMapping("listClaims")
-	public String showClaims(HttpServletRequest request, Model model, Principal principal) {
-		
-		List<Claim> theClaims = claimService.getClaimsList();
-		
-		model.addAttribute("claimsList", theClaims);
-		
+	public String showClaims(Model model) {
+		List<Claim> theClaims = claimService.getClaimsList();		
+		model.addAttribute("claimsList", theClaims);	
 		return "claims";
 	}
 	
 	@GetMapping("myClaims")
-	public String showMyClaims(HttpServletRequest request, Model model, User user) {
-		
-		
-		if (request.isUserInRole("ROLE_ADJUSTER")) {
-			
-			List<Claim> myClaims = claimService.getMyClaims(user.getUserId());
-			
+	public String showMyClaims(HttpServletRequest request, Model model, User user) {		
+		if (request.isUserInRole("ROLE_ADJUSTER")) {		
+			List<Claim> myClaims = claimService.getMyClaims(user.getUserId());	
 			model.addAttribute("myClaims", myClaims);
-
 		}
-		
 		return "my-claims";
 	}
 	
 	@GetMapping("listClaims/showClaimDetails")
 	public String showClaimDetails(@ModelAttribute("claimNumber") String claimNumber,
 									HttpServletRequest request, Model theModel, User user) {
-		
 		Claim theClaim = claimService.getClaim(claimNumber);
-		
-
-		
-		if (request.isUserInRole("ROLE_ADJUSTER") && theClaim.getStatus().equalsIgnoreCase("First Notice")) {
-				
+		if (request.isUserInRole("ROLE_ADJUSTER") && 
+				theClaim.getStatus().equalsIgnoreCase("First Notice")) {
 			theClaim.setStatus("In Progress");
 			theClaim.setAdjuster(user);
-			
 			claimService.updateClaim(theClaim);
-
 		}
-		
-		
 		DeclinedClaim declinedClaim = theClaim.getDeclinedClaim();
-		
 		List<ClaimPayment> paymentsList = theClaim.getPayments();
-		
-		theModel.addAttribute("claim", theClaim);
-		
-		theModel.addAttribute("declinedClaim", declinedClaim);
-		
-		theModel.addAttribute("paymentsList", paymentsList);
-		
+		theModel.addAttribute("claim", theClaim)
+				.addAttribute("declinedClaim", declinedClaim)
+				.addAttribute("paymentsList", paymentsList);
 		return "claim-details";
 	}
 	
 	@GetMapping("addClaimDetails")
-	public String addClaimDetails(@ModelAttribute("policyHolderNumber")
-									String policyholderNumber,
-									@ModelAttribute("policyNumber")
-									String policyNumber,
-									Model theModel) {
-		
-		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);
-		
+	public String addClaimDetails(@ModelAttribute("policyHolderNumber") String policyholderNumber,
+								  @ModelAttribute("policyNumber") String policyNumber,
+								  Model theModel) {
+		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);	
 		Policy policy = policyService.getPolicy(policyNumber);
-		
-		Claim claim = new Claim();
-		
+		Claim claim = new Claim();	
 		policyHolder.addClaim(claim);
-		
-		theModel.addAttribute("policyHolder", policyHolder)
-		
-		.addAttribute("policy", policy)
-
-		.addAttribute("claim", claim);
-		
+		theModel.addAttribute("policyHolder", policyHolder)	
+				.addAttribute("policy", policy)
+				.addAttribute("claim", claim);	
 		return "file-claim-form";
 	}
 	
@@ -132,35 +96,19 @@ public class ClaimController {
 							@ModelAttribute("policyNumber") String policyNumber,
 							@Valid @ModelAttribute("claim") Claim claim,
 							BindingResult bindingResult,
-							Model theModel) {
-		
+							Model theModel) {	
+		PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);		
+		Policy policy = policyService.getPolicy(policyNumber);		
 		if (bindingResult.hasErrors()) {
-			
-			PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);
-			
-			Policy policy = policyService.getPolicy(policyNumber);
-			
-			policyHolder.addClaim(claim);
-			
-			theModel.addAttribute("policyHolder", policyHolder);
-			
-			theModel.addAttribute("policy", policy);
-
-			theModel.addAttribute("claim", claim);
-			
+			policyHolder.addClaim(claim);		
+			theModel.addAttribute("policyHolder", policyHolder)			
+					.addAttribute("policy", policy)
+					.addAttribute("claim", claim);		
 			return "file-claim-form";
-		
 		} else {
-		
-			PolicyHolder policyHolder = policyHolderService.getPolicyHolder(policyholderNumber);
-			
-			Policy policy = policyService.getPolicy(policyNumber);
-			
 			claim.setPolicyHolder(policyHolder);
 			claim.setPolicy(policy);
-	
 			claimService.saveClaim(claim);
-	
 			return "redirect:/dashboard";
 		}
 	}

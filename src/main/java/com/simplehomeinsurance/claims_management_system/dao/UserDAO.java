@@ -10,29 +10,18 @@ import com.simplehomeinsurance.claims_management_system.entity.User;
 
 @Repository
 public class UserDAO {
-	
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public User getUser(int userId) {
-		
-		Session currentSession = sessionFactory.getCurrentSession();
-		
-		User user = currentSession.get(User.class, userId);
-		
-		return user;
+	public User getUser(int userId) {		
+		Session currentSession = sessionFactory.getCurrentSession();		
+		return currentSession.get(User.class, userId);
 	}
 	
-	public User getUserbyUsername(String username) {
-		
-		Session currentSession = sessionFactory.getCurrentSession();
-		
+	public User getUserbyUsername(String username) {		
+		Session currentSession = sessionFactory.getCurrentSession();		
 		Query<User> query = currentSession.createQuery("from User where username = '"
-															+ username +"'", User.class);
-		
-		User user = query.getSingleResult();
-		
-		return user;
-	}
-	
+															+ username +"'", User.class);	
+		return query.getSingleResult();
+	}	
 }

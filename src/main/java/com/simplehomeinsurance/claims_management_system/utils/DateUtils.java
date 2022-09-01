@@ -6,21 +6,16 @@ import java.util.Date;
  
 public class DateUtils {
     
-    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-    
-    // reads a date string and converts it to a date object
-    public static Date parseDate(String dateString) throws ParseException {
-        
+    private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
+
+    public static Date parseDate(String dateString) throws ParseException {      
     	return formatter.parse(dateString);               
     }
     
-    // reads a date object and converts it to a string
-    public static String formatDate(Date date) {
-    	
+    public static String formatDate(Date date) {   	
     	if (date != null) {
     		return formatter.format(date);
-    	}
-    	
+    	} 	
     	return null;
     }
 }

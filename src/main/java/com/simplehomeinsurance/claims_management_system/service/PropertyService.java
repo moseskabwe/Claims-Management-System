@@ -10,14 +10,11 @@ import com.simplehomeinsurance.claims_management_system.entity.Property;
 
 @Service
 public class PropertyService {
-
 	@Autowired
 	private PropertyDAO propertyDAO;
 	
 	@Transactional
-	public Property getProperty(String propertyNumber) {
-		
+	public Property getProperty(String propertyNumber) {		
 		return propertyDAO.getProperty(propertyNumber);
 	}
-	
 }

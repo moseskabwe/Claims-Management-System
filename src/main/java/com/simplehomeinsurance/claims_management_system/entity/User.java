@@ -70,8 +70,7 @@ public class User {
 		if (claims == null) {
 			this.claims = new HashSet<>();
 		}
-		List<Claim> claimsList = new ArrayList<Claim>(this.claims);
-		return claimsList;
+		return new ArrayList<Claim>(this.claims);
 	}
 	
 	public void addClaim(Claim claim) {
@@ -84,8 +83,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", phoneNumber=" + phoneNumber + ", username=" + username + "]";
+		return "User [userId=" + userId + ", firstName=" + firstName + ", lastName=" + lastName 
+				+ ", email=" + email + ", phoneNumber=" + phoneNumber + ", username=" + username 
+				+ "]";
 	}
-	
 }

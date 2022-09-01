@@ -9,21 +9,17 @@ import com.simplehomeinsurance.claims_management_system.dao.UserDAO;
 import com.simplehomeinsurance.claims_management_system.entity.User;
 
 @Service
-public class UserService {
-	
+public class UserService {	
 	@Autowired	
 	private UserDAO userDAO;
 	
-	
 	@Transactional
-	public User getUser(int adjusterNumber) {
-		
+	public User getUser(int adjusterNumber) {		
 		return userDAO.getUser(adjusterNumber);		
 	}
 	
 	@Transactional
-	public User getUserbyUsername(String username) {
-		
+	public User getUserbyUsername(String username) {	
 		return userDAO.getUserbyUsername(username);
 	}
 }

@@ -12,27 +12,22 @@ import com.simplehomeinsurance.claims_management_system.entity.ClaimPayment;
 
 
 @Service
-public class ClaimPaymentService {
-	
+public class ClaimPaymentService {	
 	@Autowired
 	private ClaimPaymentDAO claimPaymentDAO;
 	
 	@Transactional
-	public List<ClaimPayment> getClaimPaymentList(){
-		
+	public List<ClaimPayment> getClaimPaymentList(){		
 		return claimPaymentDAO.getClaimPaymentList();
 	}
 	
 	@Transactional
 	public ClaimPayment getClaimPayment(int paymentNumber){
-		
 		return claimPaymentDAO.getClaimPayment(paymentNumber);
 	}
 	
 	@Transactional
 	public void saveClaimPayment(ClaimPayment claimPayment) {
-		
 		claimPaymentDAO.saveClaimPayment(claimPayment);
-	}
-	
+	}	
 }

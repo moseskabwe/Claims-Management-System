@@ -11,26 +11,22 @@ import com.simplehomeinsurance.claims_management_system.dao.DeclinedClaimDAO;
 import com.simplehomeinsurance.claims_management_system.entity.DeclinedClaim;
 
 @Service
-public class DeclinedClaimService {
-	
+public class DeclinedClaimService {	
 	@Autowired
 	private DeclinedClaimDAO declinedClaimDAO;
 	
 	@Transactional
-	public List<DeclinedClaim> getDeclinedClaimList(){
-		
+	public List<DeclinedClaim> getDeclinedClaimList() {		
 		return declinedClaimDAO.getDeclinedClaimList();
 	}
 	
 	@Transactional
-	public DeclinedClaim getDeclinedClaim(String declinedClaimNumber){
-		
+	public DeclinedClaim getDeclinedClaim(String declinedClaimNumber) {		
 		return declinedClaimDAO.getDeclinedClaim(declinedClaimNumber);
 	}
 	
 	@Transactional
-	public void saveDeclinedClaim(DeclinedClaim declinedClaim) {
-		
+	public void saveDeclinedClaim(DeclinedClaim declinedClaim) {		
 		declinedClaimDAO.saveDeclinedClaim(declinedClaim);
 	}
 }

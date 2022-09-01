@@ -8,18 +8,12 @@ import org.springframework.stereotype.Repository;
 import com.simplehomeinsurance.claims_management_system.entity.Property;
 
 @Repository
-public class PropertyDAO {
-	
+public class PropertyDAO {	
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	public Property getProperty(String propertyNumber) {
-		
+	public Property getProperty(String propertyNumber) {	
 		Session currentSession = sessionFactory.getCurrentSession();
-		
-		Property property = currentSession.get(Property.class, propertyNumber);
-		
-		return property;
+		return currentSession.get(Property.class, propertyNumber);
 	}
-
 }

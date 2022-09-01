@@ -12,19 +12,16 @@ import com.simplehomeinsurance.claims_management_system.entity.Policy;
 
 @Service
 public class PolicyService {
-	
 	@Autowired
 	private PolicyDAO policyDAO;
 	
 	@Transactional
-	public Policy getPolicy(String policyNumber) {
-		
+	public Policy getPolicy(String policyNumber) {		
 		return policyDAO.getPolicy(policyNumber);
 	}
 	
 	@Transactional
-	public List<Policy> getPolicies() {
-		
+	public List<Policy> getPolicies() {	
 		return policyDAO.getPolicyList();
 	}
 }

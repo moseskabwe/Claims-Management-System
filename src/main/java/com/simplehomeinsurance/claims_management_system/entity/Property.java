@@ -17,7 +17,7 @@ public class Property {
 	private String propertyAddress;
 	
 	public Property () {
-		
+	
 	}
 
 	public String getPropertyNumber() {
@@ -35,6 +35,4 @@ public class Property {
 	public void setPropertyAddress(String propertyAddress) {
 		this.propertyAddress = propertyAddress;
 	}
-	
-	
 }

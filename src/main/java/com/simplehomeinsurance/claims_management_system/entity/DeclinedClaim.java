@@ -77,5 +77,4 @@ public class DeclinedClaim {
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
-
 }

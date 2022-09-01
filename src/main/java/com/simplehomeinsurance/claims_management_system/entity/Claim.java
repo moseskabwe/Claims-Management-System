@@ -35,12 +35,15 @@ public class Claim {
 	@Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "claims_sequence")
     @GenericGenerator(
-        name = "claims_sequence", 
-        strategy = "com.simplehomeinsurance.claims_management_system.utils.StringPrefixedSequenceIdGenerator", 
+        name = "claims_sequence",
+        strategy = "com.simplehomeinsurance.claims_management_system.utils"
+        		 + ".StringPrefixedSequenceIdGenerator",
         parameters = {
             @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "49"),
-            @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "CM"),
-            @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%06d") })
+            @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, 
+            			value = "CM"),
+            @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, 
+            			value = "%06d") })
 	@Column(name="claim_number")
 	private String claimNumber;
 	
@@ -81,8 +84,8 @@ public class Claim {
 	@OneToMany(mappedBy = "claim", fetch = FetchType.EAGER)
 	private Set<ClaimPayment> payments;
 	
-	public Claim() {
-	
+	public Claim() {	
+		
 	}
 
 	public String getClaimNumber() {
@@ -177,8 +180,7 @@ public class Claim {
 		if (payments == null) {
 			this.payments = new HashSet<>();
 		}
-		List<ClaimPayment> paymentsList = new ArrayList<>(this.payments);
-		return paymentsList;
+		return new ArrayList<>(this.payments);
 	}
 	
 	public void addPayment(ClaimPayment payment) {
@@ -191,10 +193,8 @@ public class Claim {
 
 	@Override
 	public String toString() {
-		return "Claim [claimNumber=" + claimNumber + ", adjuster=" + adjuster + ", policyHolder=" + policyHolder
-				+ ", lossType=" + lossType + ", incidentDate="
-				+ incidentDate + ", filingDate=" + filingDate + ", status=" + status + ", notes=" + notes + "]";
-	}
-	
-	
+		return "Claim [claimNumber=" + claimNumber + ", adjuster=" + adjuster + ", policyHolder=" 
+				+ policyHolder + ", lossType=" + lossType + ", incidentDate=" + incidentDate 
+				+ ", filingDate=" + filingDate + ", status=" + status + ", notes=" + notes + "]";
+	}	
 }
