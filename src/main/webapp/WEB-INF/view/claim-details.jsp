@@ -210,7 +210,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <h4>PolicyType</h4>
+                                    <h4>Policy Type</h4>
                                     ${claim.policy.policyType}
                                 </td>
                                 <td>

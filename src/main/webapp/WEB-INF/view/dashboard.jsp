@@ -185,7 +185,7 @@
                             </c:url>
                             <tr>
                                 <td>
-                                    <p><a href="${showClaimDetails}">${claim.claimNumber}</a></p>
+                                    <p>${claim.claimNumber}</p>
                                 </td>
                                 <td>
                                     <p>${claim.policyHolder.policyHolderNumber}</p>
