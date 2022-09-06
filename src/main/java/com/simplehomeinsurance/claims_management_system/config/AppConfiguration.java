@@ -28,6 +28,8 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @EnableTransactionManagement
 @ComponentScan("com.simplehomeinsurance.claims_management_system")
 @PropertySource({"classpath:persistence-mysql.properties"})
+// Source: Chad Darby. Spring & Hibernate for Beginners (includes Spring Boot). 
+// Udemy. https://www.udemy.com/course/spring-hibernate-tutorial/
 public class AppConfiguration implements WebMvcConfigurer {
 	@Autowired
 	private Environment env;

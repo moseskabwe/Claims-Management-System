@@ -2,6 +2,8 @@ package com.simplehomeinsurance.claims_management_system.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+// Source: Chad Darby. Spring & Hibernate for Beginners (includes Spring Boot). 
+// Udemy. https://www.udemy.com/course/spring-hibernate-tutorial/
 public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
