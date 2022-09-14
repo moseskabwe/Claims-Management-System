@@ -1,6 +1,6 @@
 # Claims Management System
 
-This claims management system is a web application based on the Spring framework. The application has a Java-based configuration and is built using Maven. The front-end uses JSP, JSTL tags, HTML and CSS. Hibernate Validator is used to provide user input validation and Spring Security is used for authentication. The application connects to a MySQL database and uses the Hibernate framework to provide object-relational mapping. Passwords in the database are encrypted using the bcrypt algorithm. The Spring Boot version of this application can be found [here](https://github.com/moseskabwe/Spring-Boot-Claims-Management-System).
+This claims management system is a web application based on the Spring framework. The application has a Java-based configuration and is built using Maven. The front-end uses JSP, JSTL tags, JavaScript, HTML and CSS. Hibernate Validator is used to provide user input validation and Spring Security is used for authentication. The application connects to a MySQL database and uses the Hibernate framework to provide object-relational mapping. Passwords in the database are encrypted using the bcrypt algorithm. The Spring Boot version of this application can be found [here](https://github.com/moseskabwe/Spring-Boot-Claims-Management-System).
 
 ## Tools and Technologies
 * Java 1.8
@@ -11,6 +11,7 @@ This claims management system is a web application based on the Spring framework
 * JDBC
 * MySQL
 * JSP and JSTL
+* JavaScript
 * HTML and CSS
 * Apache Tomcat
 * Maven
